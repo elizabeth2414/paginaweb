@@ -21,6 +21,7 @@ $__ms_api = ($__ms_base === '' ? '' : $__ms_base) . '/api';
   };
 </script>
 <script src="<?= htmlspecialchars($__ms_base) ?>/assets/api.js" defer></script>
+<script src="<?= htmlspecialchars($__ms_base) ?>/assets/country.js" defer></script>
 <style>
 /* ============================================================
    ESTILOS COMPARTIDOS (assets/style.css)
@@ -7334,7 +7335,7 @@ html {
     <div>
       <div class="hero-badge">
         <span class="dot"></span>
-        Plataforma chilena de eventos deportivos
+        Plataforma de eventos deportivos en Latinoamérica
       </div>
       <h1>Conectamos los deportes<br><span class="purple">en una misma app.</span></h1>
       <p class="hero-desc">Desde tu carrera de trail hasta el torneo de fútbol del barrio. Inscripciones, ficha médica y diplomas verificables, con pagos locales en tu país.</p>
@@ -7774,19 +7775,9 @@ html {
 
   <aside class="filters">
     <div class="filter-block">
-      <h4>UBICACIÓN</h4>
-      <label class="filter-option"><input type="checkbox"> Santiago <span class="count">18</span></label>
-      <label class="filter-option"><input type="checkbox" checked> Los Lagos <span class="count">8</span></label>
-      <label class="filter-option"><input type="checkbox"> Valparaíso <span class="count">5</span></label>
-      <label class="filter-option"><input type="checkbox"> Biobío <span class="count">3</span></label>
-      <label class="filter-option"><input type="checkbox"> Online <span class="count">5</span></label>
-    </div>
-    <div class="filter-block">
       <h4>PRECIO</h4>
-      <label class="filter-option"><input type="checkbox"> Gratuito <span class="count">8</span></label>
-      <label class="filter-option"><input type="checkbox" checked> $1 - $20.000 <span class="count">22</span></label>
-      <label class="filter-option"><input type="checkbox" checked> $20.000 - $50.000 <span class="count">11</span></label>
-      <label class="filter-option"><input type="checkbox"> $50.000+ <span class="count">6</span></label>
+      <label class="filter-option"><input type="checkbox"> Gratuito</label>
+      <label class="filter-option"><input type="checkbox"> De pago</label>
     </div>
     <div class="filter-block">
       <h4>CUÁNDO</h4>
@@ -8164,7 +8155,7 @@ html {
       </div>
       <div class="form-group">
         <label class="label">Email <span style="color:var(--red-600);">*</span></label>
-        <input type="email" class="input" id="ck-email" placeholder="tu@email.com" value="calmuna1979@gmail.com">
+        <input type="email" class="input" id="ck-email" placeholder="tu@email.com">
       </div>
       <div class="form-group">
         <label class="label">Confirmar email <span style="color:var(--red-600);">*</span></label>
@@ -8213,14 +8204,17 @@ html {
             <option value="">País</option>
             <option value="CL" selected>Chile</option>
             <option value="AR">Argentina</option>
-            <option value="PE">Perú</option>
-            <option value="BO">Bolivia</option>
+            <option value="BR">Brasil</option>
             <option value="CO">Colombia</option>
+            <option value="EC">Ecuador</option>
+            <option value="PE">Perú</option>
             <option value="otro">Otro</option>
           </select>
           <select class="select" id="ck-doc-tipo">
             <option value="cedula">Cédula</option>
             <option value="rut">RUT</option>
+            <option value="dni">DNI</option>
+            <option value="cpf">CPF</option>
             <option value="pasaporte">Pasaporte</option>
           </select>
           <input class="input" id="ck-doc-numero" placeholder="Número">
@@ -8798,7 +8792,7 @@ html {
     <div>
       <div class="cf-eyebrow">
         <span class="dot"></span>
-        Plataforma chilena de eventos deportivos
+        Plataforma de eventos deportivos en Latinoamérica
       </div>
       <h1>Todo lo que necesitas<br>para tu evento, <span class="accent">en una sola app.</span></h1>
       <p class="lead">Desde la inscripción con ficha médica hasta el diploma con QR. Conectamos a deportistas, organizadores y resultados públicos en un solo lugar.</p>
@@ -8999,7 +8993,7 @@ html {
         <span class="count">7 pantallas · sin login</span>
       </div>
       <div class="role-pages-list">
-        <a href="#/" target="_blank" class="role-page-row">
+        <a href="#/" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-home"></i></div>
           <div class="role-page-info">
             <strong>Landing principal</strong>
@@ -9007,7 +9001,7 @@ html {
           </div>
           <div class="role-page-arrow">→</div>
         </a>
-        <a href="#/eventos" target="_blank" class="role-page-row">
+        <a href="#/eventos" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-calendar-search"></i></div>
           <div class="role-page-info">
             <strong>Explorador de eventos</strong>
@@ -9015,7 +9009,7 @@ html {
           </div>
           <div class="role-page-arrow">→</div>
         </a>
-        <a href="#/evento" target="_blank" class="role-page-row">
+        <a href="#/evento" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-calendar-event"></i></div>
           <div class="role-page-info">
             <strong>Página del evento</strong>
@@ -9023,7 +9017,7 @@ html {
           </div>
           <div class="role-page-arrow">→</div>
         </a>
-        <a href="#/checkout" target="_blank" class="role-page-row">
+        <a href="#/checkout" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-credit-card"></i></div>
           <div class="role-page-info">
             <strong>Checkout con ficha médica</strong>
@@ -9034,7 +9028,7 @@ html {
             <div class="role-page-arrow">→</div>
           </div>
         </a>
-        <a href="#/ticket" target="_blank" class="role-page-row">
+        <a href="#/ticket" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-qrcode"></i></div>
           <div class="role-page-info">
             <strong>Ticket confirmado</strong>
@@ -9042,7 +9036,7 @@ html {
           </div>
           <div class="role-page-arrow">→</div>
         </a>
-        <a href="#/resultados" target="_blank" class="role-page-row">
+        <a href="#/resultados" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-trophy"></i></div>
           <div class="role-page-info">
             <strong>Resultados públicos</strong>
@@ -9053,7 +9047,7 @@ html {
             <div class="role-page-arrow">→</div>
           </div>
         </a>
-        <a href="#/login" target="_blank" class="role-page-row">
+        <a href="#/login" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-login"></i></div>
           <div class="role-page-info">
             <strong>Login magic link</strong>
@@ -9109,7 +9103,7 @@ html {
         <span class="count">/organizador · 7 pantallas</span>
       </div>
       <div class="role-pages-list">
-        <a href="#/organizador" target="_blank" class="role-page-row">
+        <a href="#/organizador" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-chart-pie"></i></div>
           <div class="role-page-info">
             <strong>Dashboard del evento</strong>
@@ -9117,7 +9111,7 @@ html {
           </div>
           <div class="role-page-arrow">→</div>
         </a>
-        <a href="#/organizador/mis-eventos" target="_blank" class="role-page-row">
+        <a href="#/organizador/mis-eventos" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-calendar"></i></div>
           <div class="role-page-info">
             <strong>Mis eventos</strong>
@@ -9125,7 +9119,7 @@ html {
           </div>
           <div class="role-page-arrow">→</div>
         </a>
-        <a href="#/login" target="_blank" class="role-page-row">
+        <a href="#/login" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-plus"></i></div>
           <div class="role-page-info">
             <strong>Crear evento (wizard)</strong>
@@ -9133,7 +9127,7 @@ html {
           </div>
           <div class="role-page-arrow">→</div>
         </a>
-        <a href="#/organizador/asistentes" target="_blank" class="role-page-row">
+        <a href="#/organizador/asistentes" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-users"></i></div>
           <div class="role-page-info">
             <strong>Asistentes con ficha médica</strong>
@@ -9144,7 +9138,7 @@ html {
             <div class="role-page-arrow">→</div>
           </div>
         </a>
-        <a href="#/organizador/diplomas" target="_blank" class="role-page-row">
+        <a href="#/organizador/diplomas" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-certificate"></i></div>
           <div class="role-page-info">
             <strong>Diplomas automáticos</strong>
@@ -9155,7 +9149,7 @@ html {
             <div class="role-page-arrow">→</div>
           </div>
         </a>
-        <a href="#/organizador/descuentos" target="_blank" class="role-page-row">
+        <a href="#/organizador/descuentos" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-discount"></i></div>
           <div class="role-page-info">
             <strong>Descuentos &amp; cupones</strong>
@@ -9163,7 +9157,7 @@ html {
           </div>
           <div class="role-page-arrow">→</div>
         </a>
-        <a href="#/organizador/checkin" target="_blank" class="role-page-row">
+        <a href="#/organizador/checkin" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-scan"></i></div>
           <div class="role-page-info">
             <strong>Check-in QR</strong>
@@ -9219,7 +9213,7 @@ html {
         <span class="count">/admin · 4 pantallas</span>
       </div>
       <div class="role-pages-list">
-        <a href="#/admin" target="_blank" class="role-page-row">
+        <a href="#/admin" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-chart-pie"></i></div>
           <div class="role-page-info">
             <strong>Resumen general</strong>
@@ -9230,7 +9224,7 @@ html {
             <div class="role-page-arrow">→</div>
           </div>
         </a>
-        <a href="#/admin/organizadores" target="_blank" class="role-page-row">
+        <a href="#/admin/organizadores" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-users-group"></i></div>
           <div class="role-page-info">
             <strong>Organizadores</strong>
@@ -9238,7 +9232,7 @@ html {
           </div>
           <div class="role-page-arrow">→</div>
         </a>
-        <a href="#/admin/eventos" target="_blank" class="role-page-row">
+        <a href="#/admin/eventos" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-calendar"></i></div>
           <div class="role-page-info">
             <strong>Eventos globales</strong>
@@ -9246,7 +9240,7 @@ html {
           </div>
           <div class="role-page-arrow">→</div>
         </a>
-        <a href="#/admin/finanzas" target="_blank" class="role-page-row">
+        <a href="#/admin/finanzas" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-cash"></i></div>
           <div class="role-page-info">
             <strong>Finanzas</strong>
@@ -10510,12 +10504,8 @@ html {
         </button>
         <p class="small muted text-center mt-2">Los asistentes recibirán un email con su diploma único</p>
       </div>
-    </div>
-  </main>
-</div>
-
-
-
+    </main>
+  </div>
 </section>
 
 <section class="spa-page" data-route="/organizador/descuentos" data-shell="org" id="page-organizador-descuentos">
@@ -10690,6 +10680,9 @@ html {
   </main>
 </div>
 </section>
+</div><!-- cierre de .spa-content -->
+</div><!-- cierre de #shell-org -->
+<!-- ===== FIN ORGANIZER SHELL ===== -->
 
 <!-- ===== ADMIN LOGIN (standalone) ===== -->
 
@@ -11233,7 +11226,7 @@ html {
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;">
         <div><div class="muted small">GMV (subtotal)</div><div id="fin-subtotal" style="font-size:20px;font-weight:700;">—</div></div>
         <div><div class="muted small">Comisión Match Sport (7%)</div><div id="fin-comision" style="font-size:20px;font-weight:700;color:var(--purple-700);">—</div></div>
-        <div><div class="muted small">IVA de la comisión</div><div id="fin-iva" style="font-size:20px;font-weight:700;">—</div></div>
+        <div><div class="muted small"><span data-ms="tax-label">IVA</span> de la comisión</div><div id="fin-iva" style="font-size:20px;font-weight:700;">—</div></div>
         <div><div class="muted small">Total cobrado</div><div id="fin-total" style="font-size:20px;font-weight:700;">—</div></div>
         <div><div class="muted small">Inscripciones</div><div id="fin-inscritos" style="font-size:20px;font-weight:700;">—</div></div>
         <div><div class="muted small">Transferido a organizadores</div><div id="fin-transferido" style="font-size:20px;font-weight:700;color:var(--green-600);">—</div></div>
@@ -11293,7 +11286,7 @@ html {
       </div>
     </div>
 
-    <div class="finance-flow">
+    <div class="finance-flow" style="display:none;"><!-- datos de ejemplo ocultos: ver 'Resumen real de comisiones' arriba -->
       <h3 style="font-size: 15px; margin-bottom: 20px; font-weight: 700;">Flujo de dinero — este mes</h3>
       <div class="flow-grid">
         <div class="flow-box amber">
@@ -11317,7 +11310,7 @@ html {
       </div>
     </div>
 
-    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 12px; margin-bottom: 14px;">
+    <div style="display: none; grid-template-columns: 2fr 1fr; gap: 12px; margin-bottom: 14px;"><!-- gráficos de ejemplo ocultos -->
       <div class="chart-card">
         <h3 style="font-size: 14px; margin-bottom: 4px; font-weight: 700;">Comisión Match Sport — últimos 12 meses</h3>
         <p class="small muted mb-3" style="font-size: 11px;">Ingreso bruto antes de gastos operacionales</p>
@@ -11340,7 +11333,7 @@ html {
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" style="display:none;"><!-- movimientos de ejemplo ocultos -->
       <h3 style="font-size: 15px; margin-bottom: 16px; font-weight: 700;">Movimientos recientes</h3>
       <table class="table">
         <thead>
@@ -11410,8 +11403,8 @@ html {
 
 
 </section>
-  </div>
-</div>
+  </div><!-- cierre de .spa-content (admin) -->
+</div><!-- cierre de #shell-admin -->
 
 <!-- ===== SHARED JS ===== -->
 <script>
@@ -16097,7 +16090,7 @@ new Chart(document.getElementById('metodoChart'), {
       { q: '¿Qué es la ficha médica y por qué la piden?', a: 'La ficha médica es una declaración de salud que confirma que estás en condiciones de participar. Protege tu seguridad y la del evento. Algunos eventos la exigen obligatoriamente, otros la dejan opcional. Se firma digitalmente al inscribirte.', kw: ['ficha', 'medic', 'salud', 'declaracion', 'certificado'] },
       { q: '¿Cómo descargo mi diploma?', a: 'Después de que el organizador suba los resultados, recibirás un correo con el enlace a tu diploma digital. También puedes verlo en la sección "Resultados" buscando tu nombre o RUT. Cada diploma tiene un QR verificable.', kw: ['diploma', 'certificado finish', 'medalla', 'resultado mio'] },
       { q: '¿Cómo veo los resultados de un evento?', a: 'Ve a la sección "Resultados" en el menú principal. Ahí puedes buscar por nombre del evento, tu nombre o RUT. Los resultados aparecen una vez que el organizador los publica, generalmente entre 24 y 48 horas después del evento.', kw: ['resultado', 'tiempo', 'posicion', 'ranking', 'clasificac'] },
-      { q: '¿Es seguro pagar en Match Sport?', a: 'Sí. Los pagos se procesan a través de Webpay (Transbank) y Mercado Pago, las plataformas más seguras de Chile. Match Sport no almacena los datos de tu tarjeta. La conexión está cifrada.', kw: ['seguro', 'pago', 'pagar', 'tarjeta', 'webpay', 'transbank', 'mercado pago', 'estafa'] }
+      { q: '¿Es seguro pagar en Match Sport?', a: 'Sí. Los pagos se procesan a través de Webpay (Transbank) y Mercado Pago, pasarelas de pago seguras de la región. Match Sport no almacena los datos de tu tarjeta. La conexión está cifrada.', kw: ['seguro', 'pago', 'pagar', 'tarjeta', 'webpay', 'transbank', 'mercado pago', 'estafa'] }
     ],
     organizador: [
       { q: '¿Cómo creo mi primer evento?', a: 'Ingresa o crea tu cuenta de organizador, luego ve a "Crear evento". Un asistente te guía en 6 pasos: información básica, fecha y lugar, distancias/categorías, tickets y precios, configuración de pagos, y publicación. Puedes guardar como borrador y publicar cuando quieras.', kw: ['crear evento', 'primer evento', 'nuevo evento', 'organizar', 'publicar evento'] },
@@ -17492,21 +17485,64 @@ new Chart(document.getElementById('metodoChart'), {
     });
   }
 
+  function esc(s){ return (s==null?'':String(s)).replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c])); }
+
+  function cardResultado(e, insReales) {
+    const finishers = insReales.filter(i => i.eventId === e.id).length;
+    const dep = (e._meta && e._meta.deporte) || e.deporte || 'Evento';
+    const icon = e.icon || 'ti-trophy';
+    return `
+      <a class="result-card" href="#/evento" data-event-id="${esc(e.id)}" style="cursor:pointer;">
+        <div class="result-head">
+          <div class="result-icon" style="background: var(--purple-100); color: var(--purple-700);">
+            <i class="ti ${esc(icon)}" style="font-size: 22px;"></i>
+          </div>
+          <span class="badge badge-purple">${esc(dep)}</span>
+        </div>
+        <div class="result-title">${esc(e.nombre || 'Evento')}</div>
+        <div class="result-meta">${esc(e.fecha || 'Fecha por confirmar')}</div>
+        <div class="result-stats">
+          <div class="rstat"><strong class="purple">${finishers}</strong><small>Inscritos</small></div>
+          <div class="rstat"><strong>—</strong><small>Mejor tiempo</small></div>
+          <div class="rstat"><strong>QR</strong><small>Verificable</small></div>
+        </div>
+      </a>`;
+  }
+
   function renderResultados() {
+    const page = document.getElementById('page-resultados');
     const eventos = eventosReales();
     let inscripciones = [];
     try { inscripciones = JSON.parse(localStorage.getItem('ms_inscripciones') || '[]'); } catch(_) {}
     const idsReales = new Set(eventos.map(e => e.id));
     const insReales = inscripciones.filter(i => i && idsReales.has(i.eventId));
-    // Deportistas únicos por email
     const emails = new Set(insReales.map(i => (i.email || '').toLowerCase()).filter(Boolean));
 
     const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
-    const fmt = n => n.toLocaleString('es-CL');
+    const fmt = n => n.toLocaleString(window.MS_LOCALE || 'es-CL');
+    // Solo eventos finalizados cuentan como "resultados"
+    const finalizados = eventos.filter(e => (e.estado || '').toLowerCase() === 'finalizado');
     set('res-resultados', fmt(insReales.length));
-    set('res-eventos', fmt(eventos.length));
+    set('res-eventos', fmt(finalizados.length));
     set('res-deportistas', fmt(emails.size));
     set('res-qr', insReales.length ? '100%' : '—');
+
+    // Reemplazar tarjetas de ejemplo por datos reales (o estado vacío).
+    if (page) {
+      const grid = page.querySelector('.results-grid');
+      const topRunners = page.querySelector('.top-runners');
+      if (topRunners) topRunners.style.display = 'none'; // datos de ejemplo: ocultos
+      if (grid) {
+        if (!finalizados.length) {
+          grid.innerHTML = '<div class="card" style="grid-column:1/-1; text-align:center; padding:48px 24px;">' +
+            '<div style="font-size:44px; color:var(--purple-300);"><i class="ti ti-clipboard-off"></i></div>' +
+            '<h3 style="margin:12px 0 6px;">Aún no hay resultados publicados</h3>' +
+            '<p class="muted">Cuando un organizador finalice un evento y publique sus resultados, aparecerán aquí.</p></div>';
+        } else {
+          grid.innerHTML = finalizados.map(e => cardResultado(e, insReales)).join('');
+        }
+      }
+    }
   }
 
   if (window.MatchSPA && typeof MatchSPA.onPageInit === 'function') {
@@ -17639,7 +17675,11 @@ new Chart(document.getElementById('metodoChart'), {
   }
 
   // ---------- Selector de país (configuración por países) ----------
+  // El módulo assets/country.js es ahora el responsable del selector de país
+  // y de aplicar la configuración regional completa. Este init queda como
+  // respaldo por si country.js no cargara.
   function initCountrySelector(){
+    if (window.MSCountry) return; // country.js gestiona todo
     document.querySelectorAll('.ms-country-select').forEach(function(sel){
       if (sel._filled) return;
       var current = '';
