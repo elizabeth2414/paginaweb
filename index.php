@@ -5925,6 +5925,36 @@ body { background: var(--bg-secondary); }
   border: 0.5px solid rgba(0,0,0,0.08) !important;
 }
 
+/* FIX 3-bis — Secciones OSCURAS de "Cómo funciona": texto claro legible.
+   Mayor especificidad que las reglas anteriores para garantizar el contraste
+   (nunca texto oscuro sobre fondo oscuro). */
+.spa-page[data-route="/como-funciona"] .cf-section.dark h1,
+.spa-page[data-route="/como-funciona"] .cf-section.dark h2,
+.spa-page[data-route="/como-funciona"] .cf-section.dark h3,
+.spa-page[data-route="/como-funciona"] .cf-section.dark h4,
+.spa-page[data-route="/como-funciona"] .cf-section.dark .diff-card h3,
+.spa-page[data-route="/como-funciona"] .role-panel .role-side.dark h3,
+.spa-page[data-route="/como-funciona"] .role-panel .role-side.dark strong,
+.spa-page[data-route="/como-funciona"] .role-panel .role-side.dark .rfs-num,
+.spa-page[data-route="/como-funciona"] .cta-strip h2,
+.spa-page[data-route="/como-funciona"] .diff-stat .diff-stat-v {
+  color: #ffffff !important;
+}
+.spa-page[data-route="/como-funciona"] .cf-section.dark p,
+.spa-page[data-route="/como-funciona"] .cf-section.dark .lead,
+.spa-page[data-route="/como-funciona"] .cf-section.dark li,
+.spa-page[data-route="/como-funciona"] .cf-section.dark .diff-card p,
+.spa-page[data-route="/como-funciona"] .cf-section.dark .diff-stat-l,
+.spa-page[data-route="/como-funciona"] .role-panel .role-side.dark p,
+.spa-page[data-route="/como-funciona"] .role-panel .role-side.dark span,
+.spa-page[data-route="/como-funciona"] .cta-strip p {
+  color: rgba(255,255,255,0.85) !important;
+}
+.spa-page[data-route="/como-funciona"] .cf-section.dark .label,
+.spa-page[data-route="/como-funciona"] .role-panel .role-side.dark .role-side-eyebrow {
+  color: var(--amber-400) !important;
+}
+
 /* FIX 4 — Sección Precios (Simple y transparente): asegurar visibilidad */
 .pricing-section {
   background: #F2FEFD !important;
@@ -9234,7 +9264,7 @@ html {
           <div class="role-page-icon"><i class="ti ti-chart-pie"></i></div>
           <div class="role-page-info">
             <strong>Resumen general</strong>
-            <span>GMV $18.4M · tu ingreso $920K</span>
+            <span>Comisión (7%), GMV y transferencias reales</span>
           </div>
           <div class="role-page-meta">
             <span class="role-page-star">⭐ Vista clave</span>
@@ -9245,7 +9275,7 @@ html {
           <div class="role-page-icon"><i class="ti ti-users-group"></i></div>
           <div class="role-page-info">
             <strong>Organizadores</strong>
-            <span>23 clientes activos · ranking GMV</span>
+            <span>Listado de organizadores y su actividad</span>
           </div>
           <div class="role-page-arrow">→</div>
         </a>
@@ -9253,7 +9283,7 @@ html {
           <div class="role-page-icon"><i class="ti ti-calendar"></i></div>
           <div class="role-page-info">
             <strong>Eventos globales</strong>
-            <span>47 eventos en plataforma · filtros</span>
+            <span>Todos los eventos publicados · filtros</span>
           </div>
           <div class="role-page-arrow">→</div>
         </a>
@@ -9279,7 +9309,7 @@ html {
     <div class="cf-head">
       <div class="label">DIFERENCIADORES</div>
       <h2>Lo que ninguna ticketera<br>genérica te da.</h2>
-      <p class="lead">Tres funciones únicas, pensadas específicamente para el deporte chileno.</p>
+      <p class="lead">Tres funciones únicas, pensadas específicamente para el deporte en Latinoamérica.</p>
     </div>
 
     <div class="diff-grid">
@@ -9380,8 +9410,8 @@ html {
         Mercado Pago acredita en 48 hrs. Match Sport transfiere al organizador semanalmente o al cierre del evento.
       </div>
       <div class="biz-foot-item">
-        <strong>Proyección 2027</strong>
-        Con 47 eventos activos y GMV de $18.4M/mes, el ingreso para Match Sport es <strong style="color: var(--purple-700);">$920K/mes</strong>.
+        <strong>Cómo escala</strong>
+        Los ingresos de Match Sport crecen con el GMV de la plataforma: a mayor volumen de inscripciones, mayor es la comisión del 7% acumulada. El ejemplo de arriba es ilustrativo.
       </div>
     </div>
   </div>
@@ -9392,7 +9422,7 @@ html {
   <div class="cta-strip">
     <div>
       <h2>Listo para conectar tu deporte<br>con toda Latinoamérica.</h2>
-      <p>Crear tu primer evento toma 5 minutos. Sin costo fijo, sin contratos. Sólo pagas el 5% si vendes.</p>
+      <p>Crear tu primer evento toma 5 minutos. Sin costo fijo, sin contratos. Sólo pagas el 7% si vendes.</p>
     </div>
     <div class="cta-strip-right">
       <a href="#/login" class="btn btn-amber btn-lg btn-block">
