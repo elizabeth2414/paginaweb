@@ -11413,7 +11413,8 @@ html {
 
 
 </section>
-  </div>
+  </div><!-- cierre de .spa-content (admin) -->
+</div><!-- cierre de #shell-admin -->
 
 <!-- ===== SHARED JS ===== -->
 <script>
