@@ -1,0 +1,7 @@
+# Los comprobantes son privados: se sirven a través de PHP con control de acceso.
+# Bloquea la ejecución de cualquier script en esta carpeta.
+<FilesMatch "\.(php|phtml|php3|php4|php5|php7|phps|cgi|pl|py|sh)$">
+    Require all denied
+</FilesMatch>
+Options -ExecCGI
+AddHandler default-handler .php .phtml .php3 .php4 .php5 .php7

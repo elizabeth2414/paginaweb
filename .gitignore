@@ -1,0 +1,16 @@
+# Configuración con credenciales reales (NO subir)
+api/lib/config.local.php
+
+# Base de datos local SQLite
+/data/
+*.sqlite
+*.sqlite3
+
+# Comprobantes subidos por usuarios (contienen datos privados)
+uploads/comprobantes/*
+!uploads/comprobantes/.gitkeep
+
+# Sistema
+.DS_Store
+Thumbs.db
+*.log
