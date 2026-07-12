@@ -33,7 +33,8 @@ function ms_config(): array
         'iva_rate'        => (float) (getenv('MS_IVA_RATE') ?: 0.19),        // IVA Chile 19%
 
         // Clave de administrador (cámbiala en producción).
-        'admin_key' => getenv('MS_ADMIN_KEY') ?: 'match-admin-2027',
+        // Debe coincidir con la contraseña del panel /admin/login del frontend.
+        'admin_key' => getenv('MS_ADMIN_KEY') ?: 'match2027',
 
         // Seguridad.
         'app_secret' => getenv('MS_APP_SECRET') ?: 'cambia-esta-clave-en-produccion',

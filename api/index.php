@@ -376,6 +376,15 @@ function handle_registrations(string $method, ?string $id): void
             }
             $stmt = $db->prepare('SELECT * FROM registrations WHERE event_id = ? ORDER BY id DESC');
             $stmt->execute([$ev['id']]);
+        } elseif (isset($_GET['mine'])) {
+            // Inscripciones de todos los eventos del organizador autenticado.
+            $user = require_user();
+            $stmt = $db->prepare(
+                'SELECT r.* FROM registrations r
+                 JOIN events e ON e.id = r.event_id
+                 WHERE e.organizer_id = ? ORDER BY r.id DESC'
+            );
+            $stmt->execute([$user['id']]);
         } else {
             require_role('admin');
             $stmt = $db->query('SELECT * FROM registrations ORDER BY id DESC');
@@ -625,17 +634,35 @@ function handle_export(): void
     $db = ms_db();
     $type = $_GET['type'] ?? 'registrations';
 
+    // Autenticación: token por cabecera Bearer o por query (?token=) para
+    // permitir descargas directas desde el navegador.
+    $user = export_user($db);
+    if (!$user) {
+        json_error('No autenticado. Inicia sesión para exportar.', 401);
+    }
+    $isAdmin = ($user['role'] === 'admin');
+    $orgId = (int) $user['id'];
+
     if ($type === 'registrations') {
         $eventId = $_GET['event'] ?? null;
         if ($eventId !== null) {
             $ev = find_event($db, (string) $eventId);
             if (!$ev) json_error('El evento no existe.', 404);
+            if (!$isAdmin && (int) $ev['organizer_id'] !== $orgId) json_error('No autorizado.', 403);
             $stmt = $db->prepare('SELECT * FROM registrations WHERE event_id = ? ORDER BY id');
             $stmt->execute([$ev['id']]);
             $rows = $stmt->fetchAll();
             $filename = 'inscripciones-' . $ev['slug'] . '.csv';
-        } else {
+        } elseif ($isAdmin) {
             $rows = $db->query('SELECT * FROM registrations ORDER BY id')->fetchAll();
+            $filename = 'inscripciones.csv';
+        } else {
+            $stmt = $db->prepare(
+                'SELECT r.* FROM registrations r JOIN events e ON e.id = r.event_id
+                 WHERE e.organizer_id = ? ORDER BY r.id'
+            );
+            $stmt->execute([$orgId]);
+            $rows = $stmt->fetchAll();
             $filename = 'inscripciones.csv';
         }
         $headers = ['id', 'event_id', 'nombre', 'email', 'documento', 'categoria', 'currency', 'subtotal', 'commission', 'total', 'estado', 'payment_method', 'ticket_code', 'created_at'];
@@ -643,18 +670,42 @@ function handle_export(): void
     }
 
     if ($type === 'events') {
-        $rows = $db->query('SELECT * FROM events ORDER BY id')->fetchAll();
+        if ($isAdmin) {
+            $rows = $db->query('SELECT * FROM events ORDER BY id')->fetchAll();
+        } else {
+            $stmt = $db->prepare('SELECT * FROM events WHERE organizer_id = ? ORDER BY id');
+            $stmt->execute([$orgId]);
+            $rows = $stmt->fetchAll();
+        }
         $headers = ['id', 'slug', 'nombre', 'deporte', 'fecha', 'ubicacion', 'country_code', 'currency', 'estado', 'precio', 'cupos', 'created_at'];
         emit_csv('eventos.csv', $headers, $rows);
     }
 
     if ($type === 'payouts') {
-        $rows = $db->query('SELECT * FROM payouts ORDER BY id')->fetchAll();
+        if ($isAdmin) {
+            $rows = $db->query('SELECT * FROM payouts ORDER BY id')->fetchAll();
+        } else {
+            $stmt = $db->prepare('SELECT * FROM payouts WHERE organizer_id = ? ORDER BY id');
+            $stmt->execute([$orgId]);
+            $rows = $stmt->fetchAll();
+        }
         $headers = ['id', 'organizer_id', 'event_id', 'monto', 'currency', 'total_evento', 'comprobante_file', 'nota', 'estado', 'created_at'];
         emit_csv('comprobantes.csv', $headers, $rows);
     }
 
     json_error('Tipo de exportación no válido.', 400);
+}
+
+/** Usuario autenticado para exportar (acepta token por Bearer o ?token=). */
+function export_user(PDO $db): ?array
+{
+    $user = current_user();
+    if ($user) return $user;
+    $token = $_GET['token'] ?? '';
+    if ($token === '') return null;
+    $stmt = $db->prepare('SELECT * FROM users WHERE token = ? LIMIT 1');
+    $stmt->execute([$token]);
+    return $stmt->fetch() ?: null;
 }
 
 function emit_csv(string $filename, array $headers, array $rows): void
