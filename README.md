@@ -32,8 +32,15 @@ sql/
   datos se guardan de verdad en la base de datos (no solo en el navegador).
 - **Comisión del 7%** calculada automáticamente en cada inscripción, con el
   **IVA de la comisión** en el panel de finanzas del administrador.
-- **Configuración por países**: Chile, Argentina, Brasil, Colombia, Ecuador y
-  Perú, cada uno con su moneda; el checkout permite pagar también en **USD**.
+- **Configuración por país reactiva** (`assets/country.js`): al elegir un país
+  en la barra superior (Chile, Argentina, Brasil, Colombia, Ecuador o Perú) toda
+  la app se adapta automáticamente: **moneda**, **formato de números y fechas**
+  (locale), **impuesto** (IVA/IGV con su tasa), **ejemplos de correo y teléfono**,
+  **tipo de documento** (RUT/DNI/CPF/Cédula) y **nacionalidad**. El checkout
+  también permite pagar en **USD**.
+- **Navegación en la misma pestaña** (SPA): abrir opciones ya no abre pestañas
+  nuevas del navegador.
+- **Asistente/chatbot de ayuda** flotante en todas las páginas públicas.
 - **Roles**: organizador, corredor y administrador.
 - **Sector de pagos a organizadores**: el administrador sube el **comprobante**
   de transferencia e indica **cuánto del total se transfirió**; el organizador lo
@@ -119,10 +126,11 @@ la carpeta como raíz. La API responde en `http://127.0.0.1:8000/api/health`.
 | GET | `/api/admin/finance` | Resumen de comisiones e IVA (solo admin) |
 | GET | `/api/export?type=registrations` | Descarga CSV (requiere token) |
 
-## Lo que aún debe conectarse en producción (según el documento)
+## Lo que aún debe conectarse en producción (SOLO credenciales)
 
-Estos puntos quedan preparados en el backend pero requieren **credenciales/cuentas
-externas** que solo tú puedes generar:
+El sistema queda **completamente funcional**. Lo único pendiente son las
+integraciones que requieren **credenciales/cuentas externas** que solo tú puedes
+generar (se dejaron para el final a propósito):
 
 - **Pasarela de pago real** (Webpay/Transbank, Mercado Pago, Flow o Khipu). Hoy el
   checkout registra la inscripción y calcula la comisión; falta conectar el cobro
