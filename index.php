@@ -7335,7 +7335,7 @@ html {
     <div>
       <div class="hero-badge">
         <span class="dot"></span>
-        Plataforma chilena de eventos deportivos
+        Plataforma de eventos deportivos en Latinoamérica
       </div>
       <h1>Conectamos los deportes<br><span class="purple">en una misma app.</span></h1>
       <p class="hero-desc">Desde tu carrera de trail hasta el torneo de fútbol del barrio. Inscripciones, ficha médica y diplomas verificables, con pagos locales en tu país.</p>
@@ -8802,7 +8802,7 @@ html {
     <div>
       <div class="cf-eyebrow">
         <span class="dot"></span>
-        Plataforma chilena de eventos deportivos
+        Plataforma de eventos deportivos en Latinoamérica
       </div>
       <h1>Todo lo que necesitas<br>para tu evento, <span class="accent">en una sola app.</span></h1>
       <p class="lead">Desde la inscripción con ficha médica hasta el diploma con QR. Conectamos a deportistas, organizadores y resultados públicos en un solo lugar.</p>
@@ -16099,7 +16099,7 @@ new Chart(document.getElementById('metodoChart'), {
       { q: '¿Qué es la ficha médica y por qué la piden?', a: 'La ficha médica es una declaración de salud que confirma que estás en condiciones de participar. Protege tu seguridad y la del evento. Algunos eventos la exigen obligatoriamente, otros la dejan opcional. Se firma digitalmente al inscribirte.', kw: ['ficha', 'medic', 'salud', 'declaracion', 'certificado'] },
       { q: '¿Cómo descargo mi diploma?', a: 'Después de que el organizador suba los resultados, recibirás un correo con el enlace a tu diploma digital. También puedes verlo en la sección "Resultados" buscando tu nombre o RUT. Cada diploma tiene un QR verificable.', kw: ['diploma', 'certificado finish', 'medalla', 'resultado mio'] },
       { q: '¿Cómo veo los resultados de un evento?', a: 'Ve a la sección "Resultados" en el menú principal. Ahí puedes buscar por nombre del evento, tu nombre o RUT. Los resultados aparecen una vez que el organizador los publica, generalmente entre 24 y 48 horas después del evento.', kw: ['resultado', 'tiempo', 'posicion', 'ranking', 'clasificac'] },
-      { q: '¿Es seguro pagar en Match Sport?', a: 'Sí. Los pagos se procesan a través de Webpay (Transbank) y Mercado Pago, las plataformas más seguras de Chile. Match Sport no almacena los datos de tu tarjeta. La conexión está cifrada.', kw: ['seguro', 'pago', 'pagar', 'tarjeta', 'webpay', 'transbank', 'mercado pago', 'estafa'] }
+      { q: '¿Es seguro pagar en Match Sport?', a: 'Sí. Los pagos se procesan a través de Webpay (Transbank) y Mercado Pago, pasarelas de pago seguras de la región. Match Sport no almacena los datos de tu tarjeta. La conexión está cifrada.', kw: ['seguro', 'pago', 'pagar', 'tarjeta', 'webpay', 'transbank', 'mercado pago', 'estafa'] }
     ],
     organizador: [
       { q: '¿Cómo creo mi primer evento?', a: 'Ingresa o crea tu cuenta de organizador, luego ve a "Crear evento". Un asistente te guía en 6 pasos: información básica, fecha y lugar, distancias/categorías, tickets y precios, configuración de pagos, y publicación. Puedes guardar como borrador y publicar cuando quieras.', kw: ['crear evento', 'primer evento', 'nuevo evento', 'organizar', 'publicar evento'] },
@@ -17494,21 +17494,64 @@ new Chart(document.getElementById('metodoChart'), {
     });
   }
 
+  function esc(s){ return (s==null?'':String(s)).replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c])); }
+
+  function cardResultado(e, insReales) {
+    const finishers = insReales.filter(i => i.eventId === e.id).length;
+    const dep = (e._meta && e._meta.deporte) || e.deporte || 'Evento';
+    const icon = e.icon || 'ti-trophy';
+    return `
+      <a class="result-card" href="#/evento" data-event-id="${esc(e.id)}" style="cursor:pointer;">
+        <div class="result-head">
+          <div class="result-icon" style="background: var(--purple-100); color: var(--purple-700);">
+            <i class="ti ${esc(icon)}" style="font-size: 22px;"></i>
+          </div>
+          <span class="badge badge-purple">${esc(dep)}</span>
+        </div>
+        <div class="result-title">${esc(e.nombre || 'Evento')}</div>
+        <div class="result-meta">${esc(e.fecha || 'Fecha por confirmar')}</div>
+        <div class="result-stats">
+          <div class="rstat"><strong class="purple">${finishers}</strong><small>Inscritos</small></div>
+          <div class="rstat"><strong>—</strong><small>Mejor tiempo</small></div>
+          <div class="rstat"><strong>QR</strong><small>Verificable</small></div>
+        </div>
+      </a>`;
+  }
+
   function renderResultados() {
+    const page = document.getElementById('page-resultados');
     const eventos = eventosReales();
     let inscripciones = [];
     try { inscripciones = JSON.parse(localStorage.getItem('ms_inscripciones') || '[]'); } catch(_) {}
     const idsReales = new Set(eventos.map(e => e.id));
     const insReales = inscripciones.filter(i => i && idsReales.has(i.eventId));
-    // Deportistas únicos por email
     const emails = new Set(insReales.map(i => (i.email || '').toLowerCase()).filter(Boolean));
 
     const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
-    const fmt = n => n.toLocaleString('es-CL');
+    const fmt = n => n.toLocaleString(window.MS_LOCALE || 'es-CL');
+    // Solo eventos finalizados cuentan como "resultados"
+    const finalizados = eventos.filter(e => (e.estado || '').toLowerCase() === 'finalizado');
     set('res-resultados', fmt(insReales.length));
-    set('res-eventos', fmt(eventos.length));
+    set('res-eventos', fmt(finalizados.length));
     set('res-deportistas', fmt(emails.size));
     set('res-qr', insReales.length ? '100%' : '—');
+
+    // Reemplazar tarjetas de ejemplo por datos reales (o estado vacío).
+    if (page) {
+      const grid = page.querySelector('.results-grid');
+      const topRunners = page.querySelector('.top-runners');
+      if (topRunners) topRunners.style.display = 'none'; // datos de ejemplo: ocultos
+      if (grid) {
+        if (!finalizados.length) {
+          grid.innerHTML = '<div class="card" style="grid-column:1/-1; text-align:center; padding:48px 24px;">' +
+            '<div style="font-size:44px; color:var(--purple-300);"><i class="ti ti-clipboard-off"></i></div>' +
+            '<h3 style="margin:12px 0 6px;">Aún no hay resultados publicados</h3>' +
+            '<p class="muted">Cuando un organizador finalice un evento y publique sus resultados, aparecerán aquí.</p></div>';
+        } else {
+          grid.innerHTML = finalizados.map(e => cardResultado(e, insReales)).join('');
+        }
+      }
+    }
   }
 
   if (window.MatchSPA && typeof MatchSPA.onPageInit === 'function') {
