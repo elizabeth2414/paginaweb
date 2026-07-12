@@ -41,6 +41,24 @@ sql/
 - **Navegación en la misma pestaña** (SPA): abrir opciones ya no abre pestañas
   nuevas del navegador.
 - **Asistente/chatbot de ayuda** flotante en todas las páginas públicas.
+- **Autenticación con correo y contraseña** (registro e inicio de sesión reales)
+  en `/login`, más **inicio de sesión con Google** de extremo a extremo.
+
+## Inicio de sesión con Google (y otros proveedores)
+
+- **Google** funciona de extremo a extremo con solo el **Client ID público**
+  (no necesita client secret): el frontend usa Google Identity Services y el
+  backend verifica el ID token contra los servidores de Google.
+  1. Crea un OAuth Client ID (tipo *Web*) en Google Cloud Console y autoriza tu
+     dominio (`https://match-sport.com`).
+  2. Define la variable de entorno `MS_GOOGLE_CLIENT_ID` (o `google_client_id`
+     en `config.local.php`).
+  3. El botón oficial de Google aparecerá automáticamente en `/login`.
+- **Correo + contraseña**: ya está 100% operativo (no requiere configuración).
+- **Facebook / Apple**: quedan preparados en el backend (`/api/auth/oauth`).
+  Requieren las credenciales de cada proveedor (`MS_FACEBOOK_APP_ID`,
+  `MS_APPLE_CLIENT_ID`) y verificación de dominio; hasta configurarlos, el botón
+  muestra un mensaje claro en vez de fallar.
 - **Roles**: organizador, corredor y administrador.
 - **Sector de pagos a organizadores**: el administrador sube el **comprobante**
   de transferencia e indica **cuánto del total se transfirió**; el organizador lo
