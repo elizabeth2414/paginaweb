@@ -107,6 +107,13 @@
         return r;
       });
     },
+    oauth: function (provider, payload) {
+      var body = Object.assign({ provider: provider, country_code: (function(){ try { return localStorage.getItem('ms_country') || 'CL'; } catch(_) { return 'CL'; } })() }, payload || {});
+      return request('POST', '/auth/oauth', body).then(function (r) {
+        if (r && r.ok && r.token) setToken(r.token, false);
+        return r;
+      });
+    },
     logout: function () {
       return request('POST', '/auth/logout', {}).then(function (r) { setToken('', false); return r; });
     },

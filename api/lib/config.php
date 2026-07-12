@@ -39,6 +39,14 @@ function ms_config(): array
         // Seguridad.
         'app_secret' => getenv('MS_APP_SECRET') ?: 'cambia-esta-clave-en-produccion',
 
+        // Inicio de sesión con proveedores externos (IDs PÚBLICOS, no secretos).
+        // Google funciona de extremo a extremo con solo el Client ID (se verifica
+        // el ID token contra los servidores de Google). Déjalos vacíos para
+        // desactivar el botón correspondiente con un mensaje claro.
+        'google_client_id'  => getenv('MS_GOOGLE_CLIENT_ID') ?: '',
+        'facebook_app_id'   => getenv('MS_FACEBOOK_APP_ID') ?: '',
+        'apple_client_id'   => getenv('MS_APPLE_CLIENT_ID') ?: '',
+
         // CORS: dominios permitidos separados por coma. '*' permite todos.
         'cors_origins' => getenv('MS_CORS_ORIGINS') ?: '*',
 
