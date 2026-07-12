@@ -10510,12 +10510,8 @@ html {
         </button>
         <p class="small muted text-center mt-2">Los asistentes recibirán un email con su diploma único</p>
       </div>
-    </div>
-  </main>
-</div>
-
-
-
+    </main>
+  </div>
 </section>
 
 <section class="spa-page" data-route="/organizador/descuentos" data-shell="org" id="page-organizador-descuentos">
@@ -10690,8 +10686,9 @@ html {
   </main>
 </div>
 </section>
-</div>
-<!-- ===== FIN ORGANIZER SHELL (cierre de #shell-org) ===== -->
+</div><!-- cierre de .spa-content -->
+</div><!-- cierre de #shell-org -->
+<!-- ===== FIN ORGANIZER SHELL ===== -->
 
 <!-- ===== ADMIN LOGIN (standalone) ===== -->
 
