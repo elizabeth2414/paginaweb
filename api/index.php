@@ -768,10 +768,14 @@ function handle_admin(string $method, string $action): void
     }
 
     if ($action === 'organizers' && $method === 'GET') {
+        // Excluye cuentas técnicas auto-generadas por dispositivo (@match-sport.local)
+        // que no representan organizadores reales.
         $rows = $db->query(
             "SELECT id, name, email, country_code, created_at,
                     (SELECT COUNT(*) FROM events e WHERE e.organizer_id = users.id) AS eventos
-             FROM users WHERE role = 'organizador' ORDER BY id DESC"
+             FROM users
+             WHERE role = 'organizador' AND email NOT LIKE '%@match-sport.local'
+             ORDER BY id DESC"
         )->fetchAll();
         json_out(['ok' => true, 'organizers' => $rows]);
     }

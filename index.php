@@ -5842,25 +5842,42 @@ body { background: var(--bg-secondary); }
   color: #5F5E5A !important;
 }
 
-/* FIX 2 — Login: fondo blanco, sin morado oscuro */
-.spa-page[data-route="/login"],
-.spa-page[data-route="/admin/login"] {
+/* FIX 2 — Login público: fondo blanco, sin morado oscuro */
+.spa-page[data-route="/login"] {
   background: #F2FEFD !important;
 }
 .spa-page[data-route="/login"] .auth-bg,
 .spa-page[data-route="/login"] .login-bg,
-.spa-page[data-route="/login"] > div:first-child,
-.spa-page[data-route="/admin/login"] .auth-bg,
-.spa-page[data-route="/admin/login"] .login-bg {
+.spa-page[data-route="/login"] > div:first-child {
   background: #F2FEFD !important;
 }
-/* Esconder cualquier blob morado oscuro de fondo */
+/* Esconder cualquier blob morado oscuro de fondo (login público) */
 .spa-page[data-route="/login"] [style*="background: #063734"],
 .spa-page[data-route="/login"] [style*="background:#063734"],
-.spa-page[data-route="/login"] [style*="purple-950"],
-.spa-page[data-route="/admin/login"] [style*="background: #063734"] {
+.spa-page[data-route="/login"] [style*="purple-950"] {
   background: transparent !important;
 }
+
+/* ===== ADMIN LOGIN — tarjeta centrada sobre fondo oscuro (diseño correcto) ===== */
+.spa-page[data-route="/admin/login"] {
+  min-height: 100vh;
+  background: linear-gradient(160deg, #04413D 0%, #063734 50%, #08514D 100%) !important;
+  color: #fff;
+}
+.spa-page[data-route="/admin/login"].active {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.spa-page[data-route="/admin/login"] .admin-card h1,
+.spa-page[data-route="/admin/login"] .admin-card .sub { color: #fff; }
+.spa-page[data-route="/admin/login"] .admin-card .sub { color: rgba(255,255,255,0.7) !important; }
+.spa-page[data-route="/admin/login"] .admin-hint { text-align:center; color: rgba(255,255,255,0.55); font-size:12px; margin-top:18px; }
+.spa-page[data-route="/admin/login"] .admin-hint code { color: var(--amber-400); background: rgba(255,255,255,0.12); padding:2px 7px; border-radius:5px; }
+.spa-page[data-route="/admin/login"] .footer-link { text-align:center; margin-top:14px; }
+.spa-page[data-route="/admin/login"] .footer-link a { color: rgba(255,255,255,0.7); font-size:13px; }
+.spa-page[data-route="/admin/login"] .footer-link a:hover { color: #fff; }
 
 /* FIX 3 — Cómo funciona: textos legibles */
 .spa-page[data-route="/como-funciona"] {
@@ -10778,16 +10795,10 @@ html {
   <main class="content">
     <div class="content-header">
       <div>
-        <div class="small muted" style="font-size: 12px; margin-bottom: 4px;">Buenos días, Cristian 👋</div>
+        <div class="small muted" style="font-size: 12px; margin-bottom: 4px;">Panel de administración 👋</div>
         <h1>Resumen general de Match Sport</h1>
       </div>
       <div class="flex gap-2">
-        <select class="select" style="max-width: 160px;">
-          <option>Mayo 2027</option>
-          <option>Abril 2027</option>
-          <option>Q2 2027</option>
-          <option>Año 2027</option>
-        </select>
         <button class="btn btn-outline btn-sm" onclick="msExport('registrations', null, true)"><i class="ti ti-download" style="font-size: 14px;"></i> Exportar</button>
       </div>
     </div>
@@ -10795,26 +10806,24 @@ html {
     <div class="income-banner">
       <div class="ib-inner">
         <div>
-          <div class="ib-label"><i class="ti ti-coin"></i> TU INGRESO ESTE MES</div>
-          <div class="ib-value-big">$920.000</div>
-          <div class="ib-trend">
-            <span class="pill">+42%</span> vs. abril ($647K)
-          </div>
+          <div class="ib-label"><i class="ti ti-coin"></i> COMISIÓN MATCH SPORT (7%)</div>
+          <div class="ib-value-big" id="adm-comision">$0</div>
+          <div class="ib-trend" id="adm-iva-line" style="opacity:0.9;">IVA/IGV de la comisión: <span id="adm-iva">$0</span></div>
         </div>
         <div class="ib-stat-divider">
           <div class="ib-stat-label">GMV PROCESADO</div>
-          <div class="ib-stat-value">$18.4M</div>
-          <div class="ib-stat-sub">5% comisión Match</div>
+          <div class="ib-stat-value" id="adm-gmv">$0</div>
+          <div class="ib-stat-sub">Subtotal de inscripciones</div>
         </div>
         <div class="ib-stat-divider">
-          <div class="ib-stat-label">A TU CUENTA</div>
-          <div class="ib-stat-value">$280K</div>
-          <div class="ib-stat-sub">Margen neto</div>
+          <div class="ib-stat-label">TOTAL COBRADO</div>
+          <div class="ib-stat-value" id="adm-total">$0</div>
+          <div class="ib-stat-sub">Incluye comisión</div>
         </div>
         <div class="ib-stat-divider">
-          <div class="ib-stat-label">PROYECCIÓN</div>
-          <div class="ib-stat-value" style="color: var(--amber-400);">$1.2M</div>
-          <div class="ib-stat-sub">Cierre del mes</div>
+          <div class="ib-stat-label">TRANSFERIDO A ORGANIZADORES</div>
+          <div class="ib-stat-value" style="color: var(--amber-400);" id="adm-transferido">$0</div>
+          <div class="ib-stat-sub">Con comprobante</div>
         </div>
       </div>
     </div>
@@ -10825,32 +10834,32 @@ html {
           <div class="metric-label">Organizadores</div>
           <div class="metric-icon purple"><i class="ti ti-users-group"></i></div>
         </div>
-        <div class="metric-value">23</div>
-        <div class="metric-trend up"><i class="ti ti-arrow-up-right" style="font-size: 11px;"></i> +5 este mes</div>
+        <div class="metric-value" id="adm-organizadores">0</div>
+        <div class="metric-trend"><span class="muted small">Registrados en la plataforma</span></div>
       </div>
       <div class="metric-card">
         <div class="metric-head">
-          <div class="metric-label">Eventos activos</div>
+          <div class="metric-label">Eventos publicados</div>
           <div class="metric-icon amber"><i class="ti ti-calendar-event"></i></div>
         </div>
-        <div class="metric-value">47</div>
-        <div class="metric-trend up"><i class="ti ti-arrow-up-right" style="font-size: 11px;"></i> +8 semanal</div>
+        <div class="metric-value" id="adm-eventos">0</div>
+        <div class="metric-trend"><span class="muted small">Activos y finalizados</span></div>
       </div>
       <div class="metric-card">
         <div class="metric-head">
-          <div class="metric-label">Tickets vendidos</div>
+          <div class="metric-label">Inscripciones</div>
           <div class="metric-icon blue"><i class="ti ti-ticket"></i></div>
         </div>
-        <div class="metric-value">3.247</div>
-        <div class="metric-trend up"><i class="ti ti-arrow-up-right" style="font-size: 11px;"></i> +18%</div>
+        <div class="metric-value" id="adm-inscripciones">0</div>
+        <div class="metric-trend"><span class="muted small">Tickets vendidos reales</span></div>
       </div>
       <div class="metric-card">
         <div class="metric-head">
           <div class="metric-label">Deportistas únicos</div>
           <div class="metric-icon green"><i class="ti ti-run"></i></div>
         </div>
-        <div class="metric-value">2.184</div>
-        <div class="metric-trend up"><i class="ti ti-arrow-up-right" style="font-size: 11px;"></i> +267 nuevos</div>
+        <div class="metric-value" id="adm-deportistas">0</div>
+        <div class="metric-trend"><span class="muted small">Por correo</span></div>
       </div>
     </div>
 
@@ -10979,7 +10988,7 @@ html {
     <div class="content-header">
       <div>
         <h1>Organizadores</h1>
-        <p class="muted">23 organizadores activos en la plataforma</p>
+        <p class="muted"><span id="admin-orgs-count">0</span> organizadores registrados en la plataforma</p>
       </div>
       <button class="btn btn-primary"><i class="ti ti-plus"></i> Invitar organizador</button>
     </div>
@@ -11013,7 +11022,7 @@ html {
             <th></th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="admin-orgs-tbody">
           <tr>
             <td>
               <span class="avatar" style="background: var(--amber-600); margin-right: 10px; vertical-align: middle;">PA</span>
@@ -16099,7 +16108,18 @@ new Chart(document.getElementById('metodoChart'), {
       { q: '¿Cómo descargo la lista de inscritos?', a: 'En tu panel, ve a "Asistentes". Ahí ves la lista completa de inscritos con sus datos, estado de pago y ficha médica. Puedes exportarla a Excel con el botón "Exportar" para usarla el día del evento.', kw: ['lista inscritos', 'asistentes', 'participantes', 'exportar', 'descargar lista', 'excel inscritos'] },
       { q: '¿Cómo funciona el check-in el día del evento?', a: 'Usa la sección "Check-in QR" desde tu celular o tablet. Escaneas el código QR del ticket de cada participante y queda registrada su asistencia al instante. Funciona sin internet una vez cargada la lista.', kw: ['check-in', 'checkin', 'acreditacion', 'qr', 'dia del evento', 'registro entrada', 'escanear'] },
       { q: '¿Puedo crear códigos de descuento?', a: 'Sí. En la sección "Descuentos" puedes crear cupones (ej: EARLY20 con 20% de descuento, o GRUPO5 para compras grupales). Defines el monto, la cantidad de usos y la fecha de vencimiento. Ideal para promociones de lanzamiento.', kw: ['descuento', 'cupon', 'codigo', 'promocion', 'early bird', 'oferta', 'rebaja'] },
-      { q: '¿Cómo genero los diplomas?', a: 'En "Diplomas", subes un Excel con los resultados (RUT, nombre, tiempo, categoría, posición) y la plataforma genera automáticamente un diploma único para cada participante, con QR verificable. Se envían por correo a los inscritos.', kw: ['diploma', 'certificado', 'generar diploma', 'resultados excel'] }
+      { q: '¿Cómo genero los diplomas?', a: 'En "Diplomas", subes un Excel con los resultados (documento, nombre, tiempo, categoría, posición) y la plataforma genera automáticamente un diploma único para cada participante, con QR verificable. Se envían por correo a los inscritos.', kw: ['diploma', 'certificado', 'generar diploma', 'resultados excel'] },
+      { q: '¿Cómo veo los pagos que me transfirió Match Sport?', a: 'En tu panel de organizador verás la tarjeta "Transferencias recibidas": cada vez que el administrador te transfiere dinero, sube el comprobante e indica cuánto del total se transfirió. Ahí puedes ver la fecha, el monto, el evento y descargar el comprobante.', kw: ['comprobante', 'transferencia', 'transferido', 'recibo', 'me pagaron', 'liquidacion', 'pago recibido'] },
+      { q: '¿Cómo exporto la lista de inscritos o mis datos?', a: 'En "Asistentes" (o en tu Dashboard) usa el botón "Exportar": se descarga un archivo CSV real con las inscripciones de tus eventos (nombre, correo, documento, categoría, monto y comisión). También funciona en el panel de administrador.', kw: ['exportar', 'descargar datos', 'csv', 'excel', 'planilla', 'bajar lista'] },
+      { q: '¿Puedo cobrar en otra moneda o país?', a: 'Sí. Match Sport funciona en Chile, Argentina, Brasil, Colombia, Ecuador y Perú. Elige tu país en el selector de la barra superior y toda la plataforma se adapta: moneda, impuestos y formatos. Además puedes cobrar en dólares (USD) si lo prefieres.', kw: ['moneda', 'pais', 'dolar', 'usd', 'divisa', 'internacional', 'argentina', 'brasil', 'colombia', 'ecuador', 'peru'] }
+    ],
+    general: [
+      { q: '¿En qué países funciona Match Sport?', a: 'Funcionamos en 🇨🇱 Chile, 🇦🇷 Argentina, 🇧🇷 Brasil, 🇨🇴 Colombia, 🇪🇨 Ecuador y 🇵🇪 Perú. Selecciona tu país arriba a la izquierda y la app se adapta a tu moneda, impuestos y formatos. También puedes pagar en dólares (USD).', kw: ['pais', 'paises', 'donde funciona', 'moneda', 'dolar', 'usd', 'chile', 'argentina', 'brasil', 'colombia', 'ecuador', 'peru', 'region'] },
+      { q: '¿Cuánto cobra Match Sport de comisión?', a: 'Match Sport cobra un 7% de comisión por inscripción, de forma transparente. Se calcula automáticamente en cada pago y lo puedes ver en el resumen de finanzas.', kw: ['comision', 'cuanto cobran', 'porcentaje', 'fee', 'costo', '7%', 'tarifa'] },
+      { q: '¿Cómo funcionan los impuestos (IVA/IGV)?', a: 'El impuesto depende de tu país (por ejemplo IVA en Chile/Colombia/Ecuador, IVA en Argentina/Brasil, o IGV en Perú). En el panel de finanzas se muestra el IVA/IGV correspondiente a la comisión. La emisión de documentos tributarios se conecta según cada país.', kw: ['impuesto', 'iva', 'igv', 'factura', 'tributario', 'sii', 'boleta'] },
+      { q: '¿Dónde leo los términos y condiciones?', a: 'Puedes leer los Términos y condiciones de compra desde el pie de página, o entrando a la sección "Términos y condiciones". Ahí se explican comisión, pagos, impuestos, reembolsos y datos personales.', kw: ['terminos', 'condiciones', 'legal', 'politica', 'reembolso', 'devolucion'] },
+      { q: '¿Cómo contacto con soporte?', a: 'Escríbenos a contacto@match-sport.com o soporte@match-sport.com, o usa el botón de WhatsApp aquí abajo. También tienes el formulario en la sección "Contacto".', kw: ['contacto', 'soporte', 'ayuda', 'hablar', 'telefono', 'correo', 'email', 'whatsapp', 'atencion'] },
+      { q: '¿Sobre nosotros / qué es Match Sport?', a: 'Match Sport es la plataforma que conecta a organizadores y deportistas de Latinoamérica: publica eventos, gestiona inscripciones, cobra de forma segura y entrega tickets con QR y diplomas verificables. Conoce más en la sección "Sobre nosotros".', kw: ['sobre nosotros', 'quienes son', 'que es', 'nosotros', 'empresa', 'acerca'] }
     ]
   };
 
@@ -16157,10 +16177,11 @@ new Chart(document.getElementById('metodoChart'), {
   }
 
   function showTypeQuestion() {
-    addBot('¡Hola! 👋 Soy el asistente de Match Sport. ¿Con qué perfil necesitas ayuda?');
+    addBot('¡Hola! 👋 Soy el asistente de Match Sport. Puedes escribirme tu duda o elegir una opción:');
     addOptions([
       { label: '🏃 Soy deportista (busco inscribirme)', action: () => selectType('deportista') },
-      { label: '📋 Soy organizador (creo eventos)', action: () => selectType('organizador') }
+      { label: '📋 Soy organizador (creo eventos)', action: () => selectType('organizador') },
+      { label: 'ℹ️ Información general (países, comisión, contacto)', action: () => { userType = 'general'; addBot('Estas son las preguntas más comunes:'); showFaqList(); } }
     ]);
   }
 
@@ -16199,41 +16220,92 @@ new Chart(document.getElementById('metodoChart'), {
     }, 350);
   }
 
-  // Búsqueda por palabras clave cuando el usuario escribe libre
-  function handleFreeText(text) {
-    addUser(text);
-    const norm = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  function norml(s){ return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''); }
 
-    // Buscar en ambas categorías (o en la del tipo actual primero)
-    const pools = userType ? [FAQ[userType], FAQ[userType === 'deportista' ? 'organizador' : 'deportista']] : [FAQ.deportista, FAQ.organizador];
-    let best = null, bestScore = 0;
-    pools.forEach(pool => {
-      pool.forEach(item => {
-        let score = 0;
-        (item.kw || []).forEach(k => { if (norm.includes(k)) score++; });
-        if (score > bestScore) { bestScore = score; best = item; }
+  // Navega dentro de la app (misma pestaña) y cierra el chat.
+  function goTo(route){ closePanel(); if (window.MatchSPA && MatchSPA.navigate) MatchSPA.navigate(route); else location.hash = '#'+route; }
+  function navOption(label, route){ return { label: label, action: () => goTo(route) }; }
+
+  // Detecta saludos / agradecimientos para responder con naturalidad.
+  function smallTalk(norm){
+    if (/\b(hola|buenas|buenos dias|buenas tardes|buenas noches|hey|holi|que tal)\b/.test(norm)) return 'saludo';
+    if (/\b(gracias|muchas gracias|genial|perfecto|excelente|joya|bacan|ok gracias)\b/.test(norm)) return 'gracias';
+    if (/\b(adios|chao|hasta luego|nos vemos)\b/.test(norm)) return 'despedida';
+    return null;
+  }
+
+  // Puntúa una pregunta contra el texto del usuario (palabras clave + coincidencia difusa).
+  function scoreItem(item, norm, words){
+    let score = 0;
+    (item.kw || []).forEach(k => { if (norm.includes(norml(k))) score += 2; });
+    const qWords = norml(item.q).split(/\W+/).filter(w => w.length >= 4);
+    words.forEach(w => {
+      qWords.forEach(qw => {
+        if (qw === w) score += 1;
+        else if (w.length >= 4 && (qw.startsWith(w) || w.startsWith(qw))) score += 0.5; // tolera plurales/typos leves
       });
     });
+    return score;
+  }
+
+  // Búsqueda cuando el usuario escribe libremente.
+  function handleFreeText(text) {
+    addUser(text);
+    const norm = norml(text);
+    const words = norm.split(/\W+/).filter(w => w.length >= 3);
+
+    const talk = smallTalk(norm);
+    if (talk === 'saludo') {
+      setTimeout(() => { addBot('¡Hola! 👋 Cuéntame en qué te ayudo: puedes preguntarme por inscripciones, pagos, comisión, países, resultados o cómo crear un evento.'); showQuickTopics(); }, 300);
+      return;
+    }
+    if (talk === 'gracias') { setTimeout(() => addBot('¡De nada! 🙌 Aquí estoy si necesitas algo más.'), 300); return; }
+    if (talk === 'despedida') { setTimeout(() => addBot('¡Que te vaya excelente! 👋 Vuelve cuando quieras.'), 300); return; }
+
+    // Reúne todas las categorías (prioriza la del perfil actual).
+    const pools = [];
+    if (userType && FAQ[userType]) pools.push(FAQ[userType]);
+    ['deportista','organizador','general'].forEach(k => { if (k !== userType && FAQ[k]) pools.push(FAQ[k]); });
+
+    let best = null, bestScore = 0;
+    pools.forEach(pool => pool.forEach(item => {
+      const s = scoreItem(item, norm, words);
+      if (s > bestScore) { bestScore = s; best = item; }
+    }));
 
     setTimeout(() => {
-      if (best && bestScore > 0) {
+      if (best && bestScore >= 1) {
         addBot(best.a);
         setTimeout(() => {
           addBot('¿Resolví tu duda?');
           addOptions([
             { label: 'Sí, gracias 👍', action: () => addBot('¡Genial! Estoy aquí si necesitas algo más. 🙌') },
-            { label: 'Ver más preguntas', action: () => { if (!userType) showTypeQuestion(); else showFaqList(); } },
+            { label: 'Ver más temas', action: () => showQuickTopics() },
             whatsappOption()
           ]);
-        }, 400);
+        }, 450);
       } else {
-        addBot('Mmm, no estoy seguro de cómo ayudarte con eso. 😅 Puedo derivarte a una persona de nuestro equipo:');
+        addBot('No encontré una respuesta exacta 🤔, pero puedo llevarte al lugar correcto o conectarte con una persona:');
         addOptions([
-          whatsappOption(),
-          { label: 'Ver preguntas frecuentes', action: () => { if (!userType) showTypeQuestion(); else showFaqList(); } }
+          navOption('🔎 Explorar eventos', '/eventos'),
+          navOption('❓ Cómo funciona', '/como-funciona'),
+          navOption('✉️ Contacto', '/contacto'),
+          { label: '📚 Ver preguntas frecuentes', action: () => showQuickTopics() },
+          whatsappOption()
         ]);
       }
-    }, 400);
+    }, 450);
+  }
+
+  // Menú rápido de temas (perfil + información general).
+  function showQuickTopics(){
+    addBot('¿Sobre qué necesitas ayuda?');
+    addOptions([
+      { label: '🏃 Soy deportista', action: () => selectType('deportista') },
+      { label: '📋 Soy organizador', action: () => selectType('organizador') },
+      { label: 'ℹ️ Información general (países, comisión, contacto)', action: () => { userType = 'general'; addBot('Estas son las preguntas más comunes:'); showFaqList(); } },
+      whatsappOption()
+    ]);
   }
 
   function sendMessage() {
@@ -17580,6 +17652,80 @@ new Chart(document.getElementById('metodoChart'), {
     }).catch(function(){});
   }
 
+  // ---------- ADMIN: Dashboard con datos reales ----------
+  function num(n){ return Number(n||0).toLocaleString(window.MS_LOCALE || 'es-CL'); }
+
+  function renderTopOrgs(page, orgs){
+    var main = page && page.querySelector('main.content');
+    if (!main) return;
+    var card = document.getElementById('adm-top-orgs-card');
+    if (!card){ card = document.createElement('div'); card.id='adm-top-orgs-card'; card.className='chart-card'; card.style.marginTop='16px'; main.appendChild(card); }
+    var sorted = (orgs||[]).slice().sort(function(a,b){ return (b.eventos||0)-(a.eventos||0); }).slice(0,5);
+    if (!sorted.length){ card.innerHTML = '<h3>Organizadores</h3><p class="sub">Aún no hay organizadores registrados en la plataforma.</p>'; return; }
+    card.innerHTML = '<h3>Organizadores con más eventos</h3><p class="sub">Datos reales de la base de datos</p>' +
+      '<div style="display:flex;flex-direction:column;gap:6px;margin-top:14px;">' +
+      sorted.map(function(o,i){
+        return '<div class="top-org-item"><div class="org-rank org-rank-'+(i<3?(i+1):'other')+'">'+(i+1)+'</div>' +
+          '<div class="org-info"><strong>'+esc(o.name||o.email||'Organizador')+'</strong>' +
+          '<div class="small">'+esc(o.email||'')+'</div></div>' +
+          '<div class="org-stat"><strong>'+(o.eventos||0)+'</strong> ev.</div></div>';
+      }).join('') +
+      '</div><a href="#/admin/organizadores" style="display:block;margin-top:12px;padding-top:10px;border-top:0.5px solid var(--border);font-size:11px;color:var(--purple-700);font-weight:600;">Ver todos los organizadores →</a>';
+  }
+
+  function renderAdminDashboard(){
+    if (!window.MSApi) return;
+    var page = document.getElementById('page-admin-dashboard');
+    // Ocultar bloques de ejemplo (gráficos y alertas ficticias, sin datos reales).
+    if (page) page.querySelectorAll('.chart-grid').forEach(function(g){ g.style.display='none'; });
+    var set = function(id,v){ var el=document.getElementById(id); if(el) el.textContent=v; };
+    MSApi.adminFinance().then(function(r){
+      if(!r||!r.ok) return; var t=r.totales||{};
+      set('adm-comision', money(t.comision));
+      set('adm-iva', money(t.iva_comision));
+      set('adm-gmv', money(t.subtotal));
+      set('adm-total', money(t.total_cobrado));
+      set('adm-transferido', money(t.transferido_a_organizadores));
+      set('adm-inscripciones', num(t.inscripciones));
+    }).catch(function(){});
+    MSApi.adminOrganizers().then(function(r){
+      if(!r||!r.ok) return;
+      set('adm-organizadores', num((r.organizers||[]).length));
+      renderTopOrgs(page, r.organizers);
+    }).catch(function(){});
+    MSApi.listEvents().then(function(r){
+      if(r&&r.ok) set('adm-eventos', num((r.events||[]).length));
+    }).catch(function(){});
+    MSApi.request('GET','/registrations',null,{admin:true}).then(function(r){
+      if(r&&r.ok&&r.registrations){ var e=new Set(); r.registrations.forEach(function(x){ if(x.email) e.add((x.email||'').toLowerCase()); }); set('adm-deportistas', num(e.size)); }
+    }).catch(function(){});
+  }
+
+  // ---------- ADMIN: Tabla de organizadores (datos reales) ----------
+  function renderAdminOrganizers(){
+    if (!window.MSApi) return;
+    MSApi.adminOrganizers().then(function(r){
+      var tb = document.getElementById('admin-orgs-tbody');
+      var countEl = document.getElementById('admin-orgs-count');
+      var orgs = (r && r.ok && r.organizers) ? r.organizers : [];
+      if (countEl) countEl.textContent = orgs.length;
+      if (!tb) return;
+      if (!orgs.length){ tb.innerHTML = '<tr><td colspan="8" class="muted small" style="padding:18px;text-align:center;">Aún no hay organizadores registrados.</td></tr>'; return; }
+      tb.innerHTML = orgs.map(function(o){
+        var ini = (o.name||o.email||'O').trim().slice(0,2).toUpperCase();
+        return '<tr>'+
+          '<td><span class="avatar" style="background:var(--purple-700);margin-right:10px;vertical-align:middle;">'+esc(ini)+'</span>'+
+          '<div style="display:inline-block;vertical-align:middle;"><div style="font-weight:600;">'+esc(o.name||'Organizador')+'</div>'+
+          '<div class="small muted">'+esc(o.email||'')+'</div></div></td>'+
+          '<td>'+esc((o.country_code||'').toUpperCase())+'</td>'+
+          '<td>'+(o.eventos||0)+'</td>'+
+          '<td class="small muted">'+esc((o.created_at||'').slice(0,10))+'</td>'+
+          '<td><span class="badge badge-green">Activo</span></td>'+
+          '<td></td><td></td><td></td></tr>';
+      }).join('');
+    }).catch(function(){});
+  }
+
   // ---------- ADMIN: Pagos a organizadores ----------
   function loadOrgSelect(){
     if (!window.MSApi) return;
@@ -17704,6 +17850,8 @@ new Chart(document.getElementById('metodoChart'), {
 
   if (window.MatchSPA && typeof MatchSPA.onPageInit === 'function') {
     MatchSPA.onPageInit('page-admin-finanzas', function(){ loadFinance(); loadOrgSelect(); loadAdminPayouts(); bindPayoutForm(); });
+    MatchSPA.onPageInit('page-admin-dashboard', renderAdminDashboard);
+    MatchSPA.onPageInit('page-admin-organizadores', renderAdminOrganizers);
     MatchSPA.onPageInit('page-organizador-dashboard', loadOrgPayouts);
   }
 })();
