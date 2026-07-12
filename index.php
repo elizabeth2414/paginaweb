@@ -11286,7 +11286,7 @@ html {
       </div>
     </div>
 
-    <div class="finance-flow">
+    <div class="finance-flow" style="display:none;"><!-- datos de ejemplo ocultos: ver 'Resumen real de comisiones' arriba -->
       <h3 style="font-size: 15px; margin-bottom: 20px; font-weight: 700;">Flujo de dinero — este mes</h3>
       <div class="flow-grid">
         <div class="flow-box amber">
@@ -11310,7 +11310,7 @@ html {
       </div>
     </div>
 
-    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 12px; margin-bottom: 14px;">
+    <div style="display: none; grid-template-columns: 2fr 1fr; gap: 12px; margin-bottom: 14px;"><!-- gráficos de ejemplo ocultos -->
       <div class="chart-card">
         <h3 style="font-size: 14px; margin-bottom: 4px; font-weight: 700;">Comisión Match Sport — últimos 12 meses</h3>
         <p class="small muted mb-3" style="font-size: 11px;">Ingreso bruto antes de gastos operacionales</p>
@@ -11333,7 +11333,7 @@ html {
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" style="display:none;"><!-- movimientos de ejemplo ocultos -->
       <h3 style="font-size: 15px; margin-bottom: 16px; font-weight: 700;">Movimientos recientes</h3>
       <table class="table">
         <thead>
