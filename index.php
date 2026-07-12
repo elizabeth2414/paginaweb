@@ -7775,19 +7775,9 @@ html {
 
   <aside class="filters">
     <div class="filter-block">
-      <h4>UBICACIÓN</h4>
-      <label class="filter-option"><input type="checkbox"> Santiago <span class="count">18</span></label>
-      <label class="filter-option"><input type="checkbox" checked> Los Lagos <span class="count">8</span></label>
-      <label class="filter-option"><input type="checkbox"> Valparaíso <span class="count">5</span></label>
-      <label class="filter-option"><input type="checkbox"> Biobío <span class="count">3</span></label>
-      <label class="filter-option"><input type="checkbox"> Online <span class="count">5</span></label>
-    </div>
-    <div class="filter-block">
       <h4>PRECIO</h4>
-      <label class="filter-option"><input type="checkbox"> Gratuito <span class="count">8</span></label>
-      <label class="filter-option"><input type="checkbox" checked> $1 - $20.000 <span class="count">22</span></label>
-      <label class="filter-option"><input type="checkbox" checked> $20.000 - $50.000 <span class="count">11</span></label>
-      <label class="filter-option"><input type="checkbox"> $50.000+ <span class="count">6</span></label>
+      <label class="filter-option"><input type="checkbox"> Gratuito</label>
+      <label class="filter-option"><input type="checkbox"> De pago</label>
     </div>
     <div class="filter-block">
       <h4>CUÁNDO</h4>
