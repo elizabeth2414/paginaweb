@@ -5842,25 +5842,42 @@ body { background: var(--bg-secondary); }
   color: #5F5E5A !important;
 }
 
-/* FIX 2 — Login: fondo blanco, sin morado oscuro */
-.spa-page[data-route="/login"],
-.spa-page[data-route="/admin/login"] {
+/* FIX 2 — Login público: fondo blanco, sin morado oscuro */
+.spa-page[data-route="/login"] {
   background: #F2FEFD !important;
 }
 .spa-page[data-route="/login"] .auth-bg,
 .spa-page[data-route="/login"] .login-bg,
-.spa-page[data-route="/login"] > div:first-child,
-.spa-page[data-route="/admin/login"] .auth-bg,
-.spa-page[data-route="/admin/login"] .login-bg {
+.spa-page[data-route="/login"] > div:first-child {
   background: #F2FEFD !important;
 }
-/* Esconder cualquier blob morado oscuro de fondo */
+/* Esconder cualquier blob morado oscuro de fondo (login público) */
 .spa-page[data-route="/login"] [style*="background: #063734"],
 .spa-page[data-route="/login"] [style*="background:#063734"],
-.spa-page[data-route="/login"] [style*="purple-950"],
-.spa-page[data-route="/admin/login"] [style*="background: #063734"] {
+.spa-page[data-route="/login"] [style*="purple-950"] {
   background: transparent !important;
 }
+
+/* ===== ADMIN LOGIN — tarjeta centrada sobre fondo oscuro (diseño correcto) ===== */
+.spa-page[data-route="/admin/login"] {
+  min-height: 100vh;
+  background: linear-gradient(160deg, #04413D 0%, #063734 50%, #08514D 100%) !important;
+  color: #fff;
+}
+.spa-page[data-route="/admin/login"].active {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.spa-page[data-route="/admin/login"] .admin-card h1,
+.spa-page[data-route="/admin/login"] .admin-card .sub { color: #fff; }
+.spa-page[data-route="/admin/login"] .admin-card .sub { color: rgba(255,255,255,0.7) !important; }
+.spa-page[data-route="/admin/login"] .admin-hint { text-align:center; color: rgba(255,255,255,0.55); font-size:12px; margin-top:18px; }
+.spa-page[data-route="/admin/login"] .admin-hint code { color: var(--amber-400); background: rgba(255,255,255,0.12); padding:2px 7px; border-radius:5px; }
+.spa-page[data-route="/admin/login"] .footer-link { text-align:center; margin-top:14px; }
+.spa-page[data-route="/admin/login"] .footer-link a { color: rgba(255,255,255,0.7); font-size:13px; }
+.spa-page[data-route="/admin/login"] .footer-link a:hover { color: #fff; }
 
 /* FIX 3 — Cómo funciona: textos legibles */
 .spa-page[data-route="/como-funciona"] {
