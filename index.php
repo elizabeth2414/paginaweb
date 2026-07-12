@@ -8999,7 +8999,7 @@ html {
         <span class="count">7 pantallas · sin login</span>
       </div>
       <div class="role-pages-list">
-        <a href="#/" target="_blank" class="role-page-row">
+        <a href="#/" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-home"></i></div>
           <div class="role-page-info">
             <strong>Landing principal</strong>
@@ -9007,7 +9007,7 @@ html {
           </div>
           <div class="role-page-arrow">→</div>
         </a>
-        <a href="#/eventos" target="_blank" class="role-page-row">
+        <a href="#/eventos" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-calendar-search"></i></div>
           <div class="role-page-info">
             <strong>Explorador de eventos</strong>
@@ -9015,7 +9015,7 @@ html {
           </div>
           <div class="role-page-arrow">→</div>
         </a>
-        <a href="#/evento" target="_blank" class="role-page-row">
+        <a href="#/evento" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-calendar-event"></i></div>
           <div class="role-page-info">
             <strong>Página del evento</strong>
@@ -9023,7 +9023,7 @@ html {
           </div>
           <div class="role-page-arrow">→</div>
         </a>
-        <a href="#/checkout" target="_blank" class="role-page-row">
+        <a href="#/checkout" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-credit-card"></i></div>
           <div class="role-page-info">
             <strong>Checkout con ficha médica</strong>
@@ -9034,7 +9034,7 @@ html {
             <div class="role-page-arrow">→</div>
           </div>
         </a>
-        <a href="#/ticket" target="_blank" class="role-page-row">
+        <a href="#/ticket" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-qrcode"></i></div>
           <div class="role-page-info">
             <strong>Ticket confirmado</strong>
@@ -9042,7 +9042,7 @@ html {
           </div>
           <div class="role-page-arrow">→</div>
         </a>
-        <a href="#/resultados" target="_blank" class="role-page-row">
+        <a href="#/resultados" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-trophy"></i></div>
           <div class="role-page-info">
             <strong>Resultados públicos</strong>
@@ -9053,7 +9053,7 @@ html {
             <div class="role-page-arrow">→</div>
           </div>
         </a>
-        <a href="#/login" target="_blank" class="role-page-row">
+        <a href="#/login" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-login"></i></div>
           <div class="role-page-info">
             <strong>Login magic link</strong>
@@ -9109,7 +9109,7 @@ html {
         <span class="count">/organizador · 7 pantallas</span>
       </div>
       <div class="role-pages-list">
-        <a href="#/organizador" target="_blank" class="role-page-row">
+        <a href="#/organizador" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-chart-pie"></i></div>
           <div class="role-page-info">
             <strong>Dashboard del evento</strong>
@@ -9117,7 +9117,7 @@ html {
           </div>
           <div class="role-page-arrow">→</div>
         </a>
-        <a href="#/organizador/mis-eventos" target="_blank" class="role-page-row">
+        <a href="#/organizador/mis-eventos" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-calendar"></i></div>
           <div class="role-page-info">
             <strong>Mis eventos</strong>
@@ -9125,7 +9125,7 @@ html {
           </div>
           <div class="role-page-arrow">→</div>
         </a>
-        <a href="#/login" target="_blank" class="role-page-row">
+        <a href="#/login" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-plus"></i></div>
           <div class="role-page-info">
             <strong>Crear evento (wizard)</strong>
@@ -9133,7 +9133,7 @@ html {
           </div>
           <div class="role-page-arrow">→</div>
         </a>
-        <a href="#/organizador/asistentes" target="_blank" class="role-page-row">
+        <a href="#/organizador/asistentes" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-users"></i></div>
           <div class="role-page-info">
             <strong>Asistentes con ficha médica</strong>
@@ -9144,7 +9144,7 @@ html {
             <div class="role-page-arrow">→</div>
           </div>
         </a>
-        <a href="#/organizador/diplomas" target="_blank" class="role-page-row">
+        <a href="#/organizador/diplomas" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-certificate"></i></div>
           <div class="role-page-info">
             <strong>Diplomas automáticos</strong>
@@ -9155,7 +9155,7 @@ html {
             <div class="role-page-arrow">→</div>
           </div>
         </a>
-        <a href="#/organizador/descuentos" target="_blank" class="role-page-row">
+        <a href="#/organizador/descuentos" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-discount"></i></div>
           <div class="role-page-info">
             <strong>Descuentos &amp; cupones</strong>
@@ -9163,7 +9163,7 @@ html {
           </div>
           <div class="role-page-arrow">→</div>
         </a>
-        <a href="#/organizador/checkin" target="_blank" class="role-page-row">
+        <a href="#/organizador/checkin" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-scan"></i></div>
           <div class="role-page-info">
             <strong>Check-in QR</strong>
@@ -9219,7 +9219,7 @@ html {
         <span class="count">/admin · 4 pantallas</span>
       </div>
       <div class="role-pages-list">
-        <a href="#/admin" target="_blank" class="role-page-row">
+        <a href="#/admin" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-chart-pie"></i></div>
           <div class="role-page-info">
             <strong>Resumen general</strong>
@@ -9230,7 +9230,7 @@ html {
             <div class="role-page-arrow">→</div>
           </div>
         </a>
-        <a href="#/admin/organizadores" target="_blank" class="role-page-row">
+        <a href="#/admin/organizadores" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-users-group"></i></div>
           <div class="role-page-info">
             <strong>Organizadores</strong>
@@ -9238,7 +9238,7 @@ html {
           </div>
           <div class="role-page-arrow">→</div>
         </a>
-        <a href="#/admin/eventos" target="_blank" class="role-page-row">
+        <a href="#/admin/eventos" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-calendar"></i></div>
           <div class="role-page-info">
             <strong>Eventos globales</strong>
@@ -9246,7 +9246,7 @@ html {
           </div>
           <div class="role-page-arrow">→</div>
         </a>
-        <a href="#/admin/finanzas" target="_blank" class="role-page-row">
+        <a href="#/admin/finanzas" class="role-page-row">
           <div class="role-page-icon"><i class="ti ti-cash"></i></div>
           <div class="role-page-info">
             <strong>Finanzas</strong>
@@ -10690,6 +10690,8 @@ html {
   </main>
 </div>
 </section>
+</div>
+<!-- ===== FIN ORGANIZER SHELL (cierre de #shell-org) ===== -->
 
 <!-- ===== ADMIN LOGIN (standalone) ===== -->
 
@@ -11411,7 +11413,6 @@ html {
 
 </section>
   </div>
-</div>
 
 <!-- ===== SHARED JS ===== -->
 <script>
