@@ -16116,7 +16116,18 @@ new Chart(document.getElementById('metodoChart'), {
       { q: '¿Cómo descargo la lista de inscritos?', a: 'En tu panel, ve a "Asistentes". Ahí ves la lista completa de inscritos con sus datos, estado de pago y ficha médica. Puedes exportarla a Excel con el botón "Exportar" para usarla el día del evento.', kw: ['lista inscritos', 'asistentes', 'participantes', 'exportar', 'descargar lista', 'excel inscritos'] },
       { q: '¿Cómo funciona el check-in el día del evento?', a: 'Usa la sección "Check-in QR" desde tu celular o tablet. Escaneas el código QR del ticket de cada participante y queda registrada su asistencia al instante. Funciona sin internet una vez cargada la lista.', kw: ['check-in', 'checkin', 'acreditacion', 'qr', 'dia del evento', 'registro entrada', 'escanear'] },
       { q: '¿Puedo crear códigos de descuento?', a: 'Sí. En la sección "Descuentos" puedes crear cupones (ej: EARLY20 con 20% de descuento, o GRUPO5 para compras grupales). Defines el monto, la cantidad de usos y la fecha de vencimiento. Ideal para promociones de lanzamiento.', kw: ['descuento', 'cupon', 'codigo', 'promocion', 'early bird', 'oferta', 'rebaja'] },
-      { q: '¿Cómo genero los diplomas?', a: 'En "Diplomas", subes un Excel con los resultados (RUT, nombre, tiempo, categoría, posición) y la plataforma genera automáticamente un diploma único para cada participante, con QR verificable. Se envían por correo a los inscritos.', kw: ['diploma', 'certificado', 'generar diploma', 'resultados excel'] }
+      { q: '¿Cómo genero los diplomas?', a: 'En "Diplomas", subes un Excel con los resultados (documento, nombre, tiempo, categoría, posición) y la plataforma genera automáticamente un diploma único para cada participante, con QR verificable. Se envían por correo a los inscritos.', kw: ['diploma', 'certificado', 'generar diploma', 'resultados excel'] },
+      { q: '¿Cómo veo los pagos que me transfirió Match Sport?', a: 'En tu panel de organizador verás la tarjeta "Transferencias recibidas": cada vez que el administrador te transfiere dinero, sube el comprobante e indica cuánto del total se transfirió. Ahí puedes ver la fecha, el monto, el evento y descargar el comprobante.', kw: ['comprobante', 'transferencia', 'transferido', 'recibo', 'me pagaron', 'liquidacion', 'pago recibido'] },
+      { q: '¿Cómo exporto la lista de inscritos o mis datos?', a: 'En "Asistentes" (o en tu Dashboard) usa el botón "Exportar": se descarga un archivo CSV real con las inscripciones de tus eventos (nombre, correo, documento, categoría, monto y comisión). También funciona en el panel de administrador.', kw: ['exportar', 'descargar datos', 'csv', 'excel', 'planilla', 'bajar lista'] },
+      { q: '¿Puedo cobrar en otra moneda o país?', a: 'Sí. Match Sport funciona en Chile, Argentina, Brasil, Colombia, Ecuador y Perú. Elige tu país en el selector de la barra superior y toda la plataforma se adapta: moneda, impuestos y formatos. Además puedes cobrar en dólares (USD) si lo prefieres.', kw: ['moneda', 'pais', 'dolar', 'usd', 'divisa', 'internacional', 'argentina', 'brasil', 'colombia', 'ecuador', 'peru'] }
+    ],
+    general: [
+      { q: '¿En qué países funciona Match Sport?', a: 'Funcionamos en 🇨🇱 Chile, 🇦🇷 Argentina, 🇧🇷 Brasil, 🇨🇴 Colombia, 🇪🇨 Ecuador y 🇵🇪 Perú. Selecciona tu país arriba a la izquierda y la app se adapta a tu moneda, impuestos y formatos. También puedes pagar en dólares (USD).', kw: ['pais', 'paises', 'donde funciona', 'moneda', 'dolar', 'usd', 'chile', 'argentina', 'brasil', 'colombia', 'ecuador', 'peru', 'region'] },
+      { q: '¿Cuánto cobra Match Sport de comisión?', a: 'Match Sport cobra un 7% de comisión por inscripción, de forma transparente. Se calcula automáticamente en cada pago y lo puedes ver en el resumen de finanzas.', kw: ['comision', 'cuanto cobran', 'porcentaje', 'fee', 'costo', '7%', 'tarifa'] },
+      { q: '¿Cómo funcionan los impuestos (IVA/IGV)?', a: 'El impuesto depende de tu país (por ejemplo IVA en Chile/Colombia/Ecuador, IVA en Argentina/Brasil, o IGV en Perú). En el panel de finanzas se muestra el IVA/IGV correspondiente a la comisión. La emisión de documentos tributarios se conecta según cada país.', kw: ['impuesto', 'iva', 'igv', 'factura', 'tributario', 'sii', 'boleta'] },
+      { q: '¿Dónde leo los términos y condiciones?', a: 'Puedes leer los Términos y condiciones de compra desde el pie de página, o entrando a la sección "Términos y condiciones". Ahí se explican comisión, pagos, impuestos, reembolsos y datos personales.', kw: ['terminos', 'condiciones', 'legal', 'politica', 'reembolso', 'devolucion'] },
+      { q: '¿Cómo contacto con soporte?', a: 'Escríbenos a contacto@match-sport.com o soporte@match-sport.com, o usa el botón de WhatsApp aquí abajo. También tienes el formulario en la sección "Contacto".', kw: ['contacto', 'soporte', 'ayuda', 'hablar', 'telefono', 'correo', 'email', 'whatsapp', 'atencion'] },
+      { q: '¿Sobre nosotros / qué es Match Sport?', a: 'Match Sport es la plataforma que conecta a organizadores y deportistas de Latinoamérica: publica eventos, gestiona inscripciones, cobra de forma segura y entrega tickets con QR y diplomas verificables. Conoce más en la sección "Sobre nosotros".', kw: ['sobre nosotros', 'quienes son', 'que es', 'nosotros', 'empresa', 'acerca'] }
     ]
   };
 
@@ -16174,10 +16185,11 @@ new Chart(document.getElementById('metodoChart'), {
   }
 
   function showTypeQuestion() {
-    addBot('¡Hola! 👋 Soy el asistente de Match Sport. ¿Con qué perfil necesitas ayuda?');
+    addBot('¡Hola! 👋 Soy el asistente de Match Sport. Puedes escribirme tu duda o elegir una opción:');
     addOptions([
       { label: '🏃 Soy deportista (busco inscribirme)', action: () => selectType('deportista') },
-      { label: '📋 Soy organizador (creo eventos)', action: () => selectType('organizador') }
+      { label: '📋 Soy organizador (creo eventos)', action: () => selectType('organizador') },
+      { label: 'ℹ️ Información general (países, comisión, contacto)', action: () => { userType = 'general'; addBot('Estas son las preguntas más comunes:'); showFaqList(); } }
     ]);
   }
 
@@ -16216,41 +16228,92 @@ new Chart(document.getElementById('metodoChart'), {
     }, 350);
   }
 
-  // Búsqueda por palabras clave cuando el usuario escribe libre
-  function handleFreeText(text) {
-    addUser(text);
-    const norm = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  function norml(s){ return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''); }
 
-    // Buscar en ambas categorías (o en la del tipo actual primero)
-    const pools = userType ? [FAQ[userType], FAQ[userType === 'deportista' ? 'organizador' : 'deportista']] : [FAQ.deportista, FAQ.organizador];
-    let best = null, bestScore = 0;
-    pools.forEach(pool => {
-      pool.forEach(item => {
-        let score = 0;
-        (item.kw || []).forEach(k => { if (norm.includes(k)) score++; });
-        if (score > bestScore) { bestScore = score; best = item; }
+  // Navega dentro de la app (misma pestaña) y cierra el chat.
+  function goTo(route){ closePanel(); if (window.MatchSPA && MatchSPA.navigate) MatchSPA.navigate(route); else location.hash = '#'+route; }
+  function navOption(label, route){ return { label: label, action: () => goTo(route) }; }
+
+  // Detecta saludos / agradecimientos para responder con naturalidad.
+  function smallTalk(norm){
+    if (/\b(hola|buenas|buenos dias|buenas tardes|buenas noches|hey|holi|que tal)\b/.test(norm)) return 'saludo';
+    if (/\b(gracias|muchas gracias|genial|perfecto|excelente|joya|bacan|ok gracias)\b/.test(norm)) return 'gracias';
+    if (/\b(adios|chao|hasta luego|nos vemos)\b/.test(norm)) return 'despedida';
+    return null;
+  }
+
+  // Puntúa una pregunta contra el texto del usuario (palabras clave + coincidencia difusa).
+  function scoreItem(item, norm, words){
+    let score = 0;
+    (item.kw || []).forEach(k => { if (norm.includes(norml(k))) score += 2; });
+    const qWords = norml(item.q).split(/\W+/).filter(w => w.length >= 4);
+    words.forEach(w => {
+      qWords.forEach(qw => {
+        if (qw === w) score += 1;
+        else if (w.length >= 4 && (qw.startsWith(w) || w.startsWith(qw))) score += 0.5; // tolera plurales/typos leves
       });
     });
+    return score;
+  }
+
+  // Búsqueda cuando el usuario escribe libremente.
+  function handleFreeText(text) {
+    addUser(text);
+    const norm = norml(text);
+    const words = norm.split(/\W+/).filter(w => w.length >= 3);
+
+    const talk = smallTalk(norm);
+    if (talk === 'saludo') {
+      setTimeout(() => { addBot('¡Hola! 👋 Cuéntame en qué te ayudo: puedes preguntarme por inscripciones, pagos, comisión, países, resultados o cómo crear un evento.'); showQuickTopics(); }, 300);
+      return;
+    }
+    if (talk === 'gracias') { setTimeout(() => addBot('¡De nada! 🙌 Aquí estoy si necesitas algo más.'), 300); return; }
+    if (talk === 'despedida') { setTimeout(() => addBot('¡Que te vaya excelente! 👋 Vuelve cuando quieras.'), 300); return; }
+
+    // Reúne todas las categorías (prioriza la del perfil actual).
+    const pools = [];
+    if (userType && FAQ[userType]) pools.push(FAQ[userType]);
+    ['deportista','organizador','general'].forEach(k => { if (k !== userType && FAQ[k]) pools.push(FAQ[k]); });
+
+    let best = null, bestScore = 0;
+    pools.forEach(pool => pool.forEach(item => {
+      const s = scoreItem(item, norm, words);
+      if (s > bestScore) { bestScore = s; best = item; }
+    }));
 
     setTimeout(() => {
-      if (best && bestScore > 0) {
+      if (best && bestScore >= 1) {
         addBot(best.a);
         setTimeout(() => {
           addBot('¿Resolví tu duda?');
           addOptions([
             { label: 'Sí, gracias 👍', action: () => addBot('¡Genial! Estoy aquí si necesitas algo más. 🙌') },
-            { label: 'Ver más preguntas', action: () => { if (!userType) showTypeQuestion(); else showFaqList(); } },
+            { label: 'Ver más temas', action: () => showQuickTopics() },
             whatsappOption()
           ]);
-        }, 400);
+        }, 450);
       } else {
-        addBot('Mmm, no estoy seguro de cómo ayudarte con eso. 😅 Puedo derivarte a una persona de nuestro equipo:');
+        addBot('No encontré una respuesta exacta 🤔, pero puedo llevarte al lugar correcto o conectarte con una persona:');
         addOptions([
-          whatsappOption(),
-          { label: 'Ver preguntas frecuentes', action: () => { if (!userType) showTypeQuestion(); else showFaqList(); } }
+          navOption('🔎 Explorar eventos', '/eventos'),
+          navOption('❓ Cómo funciona', '/como-funciona'),
+          navOption('✉️ Contacto', '/contacto'),
+          { label: '📚 Ver preguntas frecuentes', action: () => showQuickTopics() },
+          whatsappOption()
         ]);
       }
-    }, 400);
+    }, 450);
+  }
+
+  // Menú rápido de temas (perfil + información general).
+  function showQuickTopics(){
+    addBot('¿Sobre qué necesitas ayuda?');
+    addOptions([
+      { label: '🏃 Soy deportista', action: () => selectType('deportista') },
+      { label: '📋 Soy organizador', action: () => selectType('organizador') },
+      { label: 'ℹ️ Información general (países, comisión, contacto)', action: () => { userType = 'general'; addBot('Estas son las preguntas más comunes:'); showFaqList(); } },
+      whatsappOption()
+    ]);
   }
 
   function sendMessage() {
