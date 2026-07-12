@@ -10795,16 +10795,10 @@ html {
   <main class="content">
     <div class="content-header">
       <div>
-        <div class="small muted" style="font-size: 12px; margin-bottom: 4px;">Buenos días, Cristian 👋</div>
+        <div class="small muted" style="font-size: 12px; margin-bottom: 4px;">Panel de administración 👋</div>
         <h1>Resumen general de Match Sport</h1>
       </div>
       <div class="flex gap-2">
-        <select class="select" style="max-width: 160px;">
-          <option>Mayo 2027</option>
-          <option>Abril 2027</option>
-          <option>Q2 2027</option>
-          <option>Año 2027</option>
-        </select>
         <button class="btn btn-outline btn-sm" onclick="msExport('registrations', null, true)"><i class="ti ti-download" style="font-size: 14px;"></i> Exportar</button>
       </div>
     </div>
@@ -10812,26 +10806,24 @@ html {
     <div class="income-banner">
       <div class="ib-inner">
         <div>
-          <div class="ib-label"><i class="ti ti-coin"></i> TU INGRESO ESTE MES</div>
-          <div class="ib-value-big">$920.000</div>
-          <div class="ib-trend">
-            <span class="pill">+42%</span> vs. abril ($647K)
-          </div>
+          <div class="ib-label"><i class="ti ti-coin"></i> COMISIÓN MATCH SPORT (7%)</div>
+          <div class="ib-value-big" id="adm-comision">$0</div>
+          <div class="ib-trend" id="adm-iva-line" style="opacity:0.9;">IVA/IGV de la comisión: <span id="adm-iva">$0</span></div>
         </div>
         <div class="ib-stat-divider">
           <div class="ib-stat-label">GMV PROCESADO</div>
-          <div class="ib-stat-value">$18.4M</div>
-          <div class="ib-stat-sub">5% comisión Match</div>
+          <div class="ib-stat-value" id="adm-gmv">$0</div>
+          <div class="ib-stat-sub">Subtotal de inscripciones</div>
         </div>
         <div class="ib-stat-divider">
-          <div class="ib-stat-label">A TU CUENTA</div>
-          <div class="ib-stat-value">$280K</div>
-          <div class="ib-stat-sub">Margen neto</div>
+          <div class="ib-stat-label">TOTAL COBRADO</div>
+          <div class="ib-stat-value" id="adm-total">$0</div>
+          <div class="ib-stat-sub">Incluye comisión</div>
         </div>
         <div class="ib-stat-divider">
-          <div class="ib-stat-label">PROYECCIÓN</div>
-          <div class="ib-stat-value" style="color: var(--amber-400);">$1.2M</div>
-          <div class="ib-stat-sub">Cierre del mes</div>
+          <div class="ib-stat-label">TRANSFERIDO A ORGANIZADORES</div>
+          <div class="ib-stat-value" style="color: var(--amber-400);" id="adm-transferido">$0</div>
+          <div class="ib-stat-sub">Con comprobante</div>
         </div>
       </div>
     </div>
@@ -10842,32 +10834,32 @@ html {
           <div class="metric-label">Organizadores</div>
           <div class="metric-icon purple"><i class="ti ti-users-group"></i></div>
         </div>
-        <div class="metric-value">23</div>
-        <div class="metric-trend up"><i class="ti ti-arrow-up-right" style="font-size: 11px;"></i> +5 este mes</div>
+        <div class="metric-value" id="adm-organizadores">0</div>
+        <div class="metric-trend"><span class="muted small">Registrados en la plataforma</span></div>
       </div>
       <div class="metric-card">
         <div class="metric-head">
-          <div class="metric-label">Eventos activos</div>
+          <div class="metric-label">Eventos publicados</div>
           <div class="metric-icon amber"><i class="ti ti-calendar-event"></i></div>
         </div>
-        <div class="metric-value">47</div>
-        <div class="metric-trend up"><i class="ti ti-arrow-up-right" style="font-size: 11px;"></i> +8 semanal</div>
+        <div class="metric-value" id="adm-eventos">0</div>
+        <div class="metric-trend"><span class="muted small">Activos y finalizados</span></div>
       </div>
       <div class="metric-card">
         <div class="metric-head">
-          <div class="metric-label">Tickets vendidos</div>
+          <div class="metric-label">Inscripciones</div>
           <div class="metric-icon blue"><i class="ti ti-ticket"></i></div>
         </div>
-        <div class="metric-value">3.247</div>
-        <div class="metric-trend up"><i class="ti ti-arrow-up-right" style="font-size: 11px;"></i> +18%</div>
+        <div class="metric-value" id="adm-inscripciones">0</div>
+        <div class="metric-trend"><span class="muted small">Tickets vendidos reales</span></div>
       </div>
       <div class="metric-card">
         <div class="metric-head">
           <div class="metric-label">Deportistas únicos</div>
           <div class="metric-icon green"><i class="ti ti-run"></i></div>
         </div>
-        <div class="metric-value">2.184</div>
-        <div class="metric-trend up"><i class="ti ti-arrow-up-right" style="font-size: 11px;"></i> +267 nuevos</div>
+        <div class="metric-value" id="adm-deportistas">0</div>
+        <div class="metric-trend"><span class="muted small">Por correo</span></div>
       </div>
     </div>
 
@@ -10996,7 +10988,7 @@ html {
     <div class="content-header">
       <div>
         <h1>Organizadores</h1>
-        <p class="muted">23 organizadores activos en la plataforma</p>
+        <p class="muted"><span id="admin-orgs-count">0</span> organizadores registrados en la plataforma</p>
       </div>
       <button class="btn btn-primary"><i class="ti ti-plus"></i> Invitar organizador</button>
     </div>
@@ -11030,7 +11022,7 @@ html {
             <th></th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="admin-orgs-tbody">
           <tr>
             <td>
               <span class="avatar" style="background: var(--amber-600); margin-right: 10px; vertical-align: middle;">PA</span>
@@ -17660,6 +17652,80 @@ new Chart(document.getElementById('metodoChart'), {
     }).catch(function(){});
   }
 
+  // ---------- ADMIN: Dashboard con datos reales ----------
+  function num(n){ return Number(n||0).toLocaleString(window.MS_LOCALE || 'es-CL'); }
+
+  function renderTopOrgs(page, orgs){
+    var main = page && page.querySelector('main.content');
+    if (!main) return;
+    var card = document.getElementById('adm-top-orgs-card');
+    if (!card){ card = document.createElement('div'); card.id='adm-top-orgs-card'; card.className='chart-card'; card.style.marginTop='16px'; main.appendChild(card); }
+    var sorted = (orgs||[]).slice().sort(function(a,b){ return (b.eventos||0)-(a.eventos||0); }).slice(0,5);
+    if (!sorted.length){ card.innerHTML = '<h3>Organizadores</h3><p class="sub">Aún no hay organizadores registrados en la plataforma.</p>'; return; }
+    card.innerHTML = '<h3>Organizadores con más eventos</h3><p class="sub">Datos reales de la base de datos</p>' +
+      '<div style="display:flex;flex-direction:column;gap:6px;margin-top:14px;">' +
+      sorted.map(function(o,i){
+        return '<div class="top-org-item"><div class="org-rank org-rank-'+(i<3?(i+1):'other')+'">'+(i+1)+'</div>' +
+          '<div class="org-info"><strong>'+esc(o.name||o.email||'Organizador')+'</strong>' +
+          '<div class="small">'+esc(o.email||'')+'</div></div>' +
+          '<div class="org-stat"><strong>'+(o.eventos||0)+'</strong> ev.</div></div>';
+      }).join('') +
+      '</div><a href="#/admin/organizadores" style="display:block;margin-top:12px;padding-top:10px;border-top:0.5px solid var(--border);font-size:11px;color:var(--purple-700);font-weight:600;">Ver todos los organizadores →</a>';
+  }
+
+  function renderAdminDashboard(){
+    if (!window.MSApi) return;
+    var page = document.getElementById('page-admin-dashboard');
+    // Ocultar bloques de ejemplo (gráficos y alertas ficticias, sin datos reales).
+    if (page) page.querySelectorAll('.chart-grid').forEach(function(g){ g.style.display='none'; });
+    var set = function(id,v){ var el=document.getElementById(id); if(el) el.textContent=v; };
+    MSApi.adminFinance().then(function(r){
+      if(!r||!r.ok) return; var t=r.totales||{};
+      set('adm-comision', money(t.comision));
+      set('adm-iva', money(t.iva_comision));
+      set('adm-gmv', money(t.subtotal));
+      set('adm-total', money(t.total_cobrado));
+      set('adm-transferido', money(t.transferido_a_organizadores));
+      set('adm-inscripciones', num(t.inscripciones));
+    }).catch(function(){});
+    MSApi.adminOrganizers().then(function(r){
+      if(!r||!r.ok) return;
+      set('adm-organizadores', num((r.organizers||[]).length));
+      renderTopOrgs(page, r.organizers);
+    }).catch(function(){});
+    MSApi.listEvents().then(function(r){
+      if(r&&r.ok) set('adm-eventos', num((r.events||[]).length));
+    }).catch(function(){});
+    MSApi.request('GET','/registrations',null,{admin:true}).then(function(r){
+      if(r&&r.ok&&r.registrations){ var e=new Set(); r.registrations.forEach(function(x){ if(x.email) e.add((x.email||'').toLowerCase()); }); set('adm-deportistas', num(e.size)); }
+    }).catch(function(){});
+  }
+
+  // ---------- ADMIN: Tabla de organizadores (datos reales) ----------
+  function renderAdminOrganizers(){
+    if (!window.MSApi) return;
+    MSApi.adminOrganizers().then(function(r){
+      var tb = document.getElementById('admin-orgs-tbody');
+      var countEl = document.getElementById('admin-orgs-count');
+      var orgs = (r && r.ok && r.organizers) ? r.organizers : [];
+      if (countEl) countEl.textContent = orgs.length;
+      if (!tb) return;
+      if (!orgs.length){ tb.innerHTML = '<tr><td colspan="8" class="muted small" style="padding:18px;text-align:center;">Aún no hay organizadores registrados.</td></tr>'; return; }
+      tb.innerHTML = orgs.map(function(o){
+        var ini = (o.name||o.email||'O').trim().slice(0,2).toUpperCase();
+        return '<tr>'+
+          '<td><span class="avatar" style="background:var(--purple-700);margin-right:10px;vertical-align:middle;">'+esc(ini)+'</span>'+
+          '<div style="display:inline-block;vertical-align:middle;"><div style="font-weight:600;">'+esc(o.name||'Organizador')+'</div>'+
+          '<div class="small muted">'+esc(o.email||'')+'</div></div></td>'+
+          '<td>'+esc((o.country_code||'').toUpperCase())+'</td>'+
+          '<td>'+(o.eventos||0)+'</td>'+
+          '<td class="small muted">'+esc((o.created_at||'').slice(0,10))+'</td>'+
+          '<td><span class="badge badge-green">Activo</span></td>'+
+          '<td></td><td></td><td></td></tr>';
+      }).join('');
+    }).catch(function(){});
+  }
+
   // ---------- ADMIN: Pagos a organizadores ----------
   function loadOrgSelect(){
     if (!window.MSApi) return;
@@ -17784,6 +17850,8 @@ new Chart(document.getElementById('metodoChart'), {
 
   if (window.MatchSPA && typeof MatchSPA.onPageInit === 'function') {
     MatchSPA.onPageInit('page-admin-finanzas', function(){ loadFinance(); loadOrgSelect(); loadAdminPayouts(); bindPayoutForm(); });
+    MatchSPA.onPageInit('page-admin-dashboard', renderAdminDashboard);
+    MatchSPA.onPageInit('page-admin-organizadores', renderAdminOrganizers);
     MatchSPA.onPageInit('page-organizador-dashboard', loadOrgPayouts);
   }
 })();
