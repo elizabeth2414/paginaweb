@@ -21,6 +21,7 @@ $__ms_api = ($__ms_base === '' ? '' : $__ms_base) . '/api';
   };
 </script>
 <script src="<?= htmlspecialchars($__ms_base) ?>/assets/api.js" defer></script>
+<script src="<?= htmlspecialchars($__ms_base) ?>/assets/country.js" defer></script>
 <style>
 /* ============================================================
    ESTILOS COMPARTIDOS (assets/style.css)
@@ -8164,7 +8165,7 @@ html {
       </div>
       <div class="form-group">
         <label class="label">Email <span style="color:var(--red-600);">*</span></label>
-        <input type="email" class="input" id="ck-email" placeholder="tu@email.com" value="calmuna1979@gmail.com">
+        <input type="email" class="input" id="ck-email" placeholder="tu@email.com">
       </div>
       <div class="form-group">
         <label class="label">Confirmar email <span style="color:var(--red-600);">*</span></label>
@@ -8213,14 +8214,17 @@ html {
             <option value="">País</option>
             <option value="CL" selected>Chile</option>
             <option value="AR">Argentina</option>
-            <option value="PE">Perú</option>
-            <option value="BO">Bolivia</option>
+            <option value="BR">Brasil</option>
             <option value="CO">Colombia</option>
+            <option value="EC">Ecuador</option>
+            <option value="PE">Perú</option>
             <option value="otro">Otro</option>
           </select>
           <select class="select" id="ck-doc-tipo">
             <option value="cedula">Cédula</option>
             <option value="rut">RUT</option>
+            <option value="dni">DNI</option>
+            <option value="cpf">CPF</option>
             <option value="pasaporte">Pasaporte</option>
           </select>
           <input class="input" id="ck-doc-numero" placeholder="Número">
@@ -11232,7 +11236,7 @@ html {
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;">
         <div><div class="muted small">GMV (subtotal)</div><div id="fin-subtotal" style="font-size:20px;font-weight:700;">—</div></div>
         <div><div class="muted small">Comisión Match Sport (7%)</div><div id="fin-comision" style="font-size:20px;font-weight:700;color:var(--purple-700);">—</div></div>
-        <div><div class="muted small">IVA de la comisión</div><div id="fin-iva" style="font-size:20px;font-weight:700;">—</div></div>
+        <div><div class="muted small"><span data-ms="tax-label">IVA</span> de la comisión</div><div id="fin-iva" style="font-size:20px;font-weight:700;">—</div></div>
         <div><div class="muted small">Total cobrado</div><div id="fin-total" style="font-size:20px;font-weight:700;">—</div></div>
         <div><div class="muted small">Inscripciones</div><div id="fin-inscritos" style="font-size:20px;font-weight:700;">—</div></div>
         <div><div class="muted small">Transferido a organizadores</div><div id="fin-transferido" style="font-size:20px;font-weight:700;color:var(--green-600);">—</div></div>
@@ -17637,7 +17641,11 @@ new Chart(document.getElementById('metodoChart'), {
   }
 
   // ---------- Selector de país (configuración por países) ----------
+  // El módulo assets/country.js es ahora el responsable del selector de país
+  // y de aplicar la configuración regional completa. Este init queda como
+  // respaldo por si country.js no cargara.
   function initCountrySelector(){
+    if (window.MSCountry) return; // country.js gestiona todo
     document.querySelectorAll('.ms-country-select').forEach(function(sel){
       if (sel._filled) return;
       var current = '';
