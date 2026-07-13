@@ -5,6 +5,20 @@
  */
 $__ms_base = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '/')), '/');
 $__ms_api = ($__ms_base === '' ? '' : $__ms_base) . '/api';
+// IDs públicos de proveedores de login (no secretos). Vacíos si no están configurados.
+$__ms_google = '';
+$__ms_facebook = '';
+$__ms_apple = '';
+$__ms_cfg_file = __DIR__ . '/api/lib/config.php';
+if (is_file($__ms_cfg_file)) {
+    require_once $__ms_cfg_file;
+    if (function_exists('ms_config')) {
+        $__c = ms_config();
+        $__ms_google = $__c['google_client_id'] ?? '';
+        $__ms_facebook = $__c['facebook_app_id'] ?? '';
+        $__ms_apple = $__c['apple_client_id'] ?? '';
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -17,7 +31,10 @@ $__ms_api = ($__ms_base === '' ? '' : $__ms_base) . '/api';
 <script>
   window.MS_CONFIG = {
     apiBase: <?= json_encode($__ms_api) ?>,
-    baseUrl: <?= json_encode($__ms_base === '' ? '.' : $__ms_base) ?>
+    baseUrl: <?= json_encode($__ms_base === '' ? '.' : $__ms_base) ?>,
+    googleClientId: <?= json_encode($__ms_google) ?>,
+    facebookAppId: <?= json_encode($__ms_facebook) ?>,
+    appleClientId: <?= json_encode($__ms_apple) ?>
   };
 </script>
 <script src="<?= htmlspecialchars($__ms_base) ?>/assets/api.js" defer></script>
@@ -3565,6 +3582,35 @@ body { background: linear-gradient(135deg, #ECFEFD 0%, #FFFFFF 100%); }
     .social-btn.apple { background: #000; color: white; border-color: #000; }
     .social-btn.apple:hover { background: #111; }
 
+    /* Tabs de autenticación (Iniciar sesión / Crear cuenta) */
+    .auth-tabs {
+      display: flex;
+      background: var(--bg-tertiary, #ECFEFD);
+      border-radius: 12px;
+      padding: 4px;
+      gap: 4px;
+      margin: 4px 0 18px;
+    }
+    .auth-tab {
+      flex: 1;
+      padding: 10px 12px;
+      border: none;
+      background: transparent;
+      border-radius: 9px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.18s;
+    }
+    .auth-tab.active {
+      background: white;
+      color: var(--purple-700);
+      box-shadow: 0 2px 8px rgba(11,139,132,0.12);
+    }
+    /* Instagram no es un proveedor de autenticación real: se oculta */
+    .social-btn.instagram { display: none !important; }
+
     .divider-or {
       display: flex;
       align-items: center;
@@ -5923,6 +5969,36 @@ body { background: var(--bg-secondary); }
   background: white !important;
   color: #1F1F1F !important;
   border: 0.5px solid rgba(0,0,0,0.08) !important;
+}
+
+/* FIX 3-bis — Secciones OSCURAS de "Cómo funciona": texto claro legible.
+   Mayor especificidad que las reglas anteriores para garantizar el contraste
+   (nunca texto oscuro sobre fondo oscuro). */
+.spa-page[data-route="/como-funciona"] .cf-section.dark h1,
+.spa-page[data-route="/como-funciona"] .cf-section.dark h2,
+.spa-page[data-route="/como-funciona"] .cf-section.dark h3,
+.spa-page[data-route="/como-funciona"] .cf-section.dark h4,
+.spa-page[data-route="/como-funciona"] .cf-section.dark .diff-card h3,
+.spa-page[data-route="/como-funciona"] .role-panel .role-side.dark h3,
+.spa-page[data-route="/como-funciona"] .role-panel .role-side.dark strong,
+.spa-page[data-route="/como-funciona"] .role-panel .role-side.dark .rfs-num,
+.spa-page[data-route="/como-funciona"] .cta-strip h2,
+.spa-page[data-route="/como-funciona"] .diff-stat .diff-stat-v {
+  color: #ffffff !important;
+}
+.spa-page[data-route="/como-funciona"] .cf-section.dark p,
+.spa-page[data-route="/como-funciona"] .cf-section.dark .lead,
+.spa-page[data-route="/como-funciona"] .cf-section.dark li,
+.spa-page[data-route="/como-funciona"] .cf-section.dark .diff-card p,
+.spa-page[data-route="/como-funciona"] .cf-section.dark .diff-stat-l,
+.spa-page[data-route="/como-funciona"] .role-panel .role-side.dark p,
+.spa-page[data-route="/como-funciona"] .role-panel .role-side.dark span,
+.spa-page[data-route="/como-funciona"] .cta-strip p {
+  color: rgba(255,255,255,0.85) !important;
+}
+.spa-page[data-route="/como-funciona"] .cf-section.dark .label,
+.spa-page[data-route="/como-funciona"] .role-panel .role-side.dark .role-side-eyebrow {
+  color: var(--amber-400) !important;
 }
 
 /* FIX 4 — Sección Precios (Simple y transparente): asegurar visibilidad */
@@ -9234,7 +9310,7 @@ html {
           <div class="role-page-icon"><i class="ti ti-chart-pie"></i></div>
           <div class="role-page-info">
             <strong>Resumen general</strong>
-            <span>GMV $18.4M · tu ingreso $920K</span>
+            <span>Comisión (7%), GMV y transferencias reales</span>
           </div>
           <div class="role-page-meta">
             <span class="role-page-star">⭐ Vista clave</span>
@@ -9245,7 +9321,7 @@ html {
           <div class="role-page-icon"><i class="ti ti-users-group"></i></div>
           <div class="role-page-info">
             <strong>Organizadores</strong>
-            <span>23 clientes activos · ranking GMV</span>
+            <span>Listado de organizadores y su actividad</span>
           </div>
           <div class="role-page-arrow">→</div>
         </a>
@@ -9253,7 +9329,7 @@ html {
           <div class="role-page-icon"><i class="ti ti-calendar"></i></div>
           <div class="role-page-info">
             <strong>Eventos globales</strong>
-            <span>47 eventos en plataforma · filtros</span>
+            <span>Todos los eventos publicados · filtros</span>
           </div>
           <div class="role-page-arrow">→</div>
         </a>
@@ -9279,7 +9355,7 @@ html {
     <div class="cf-head">
       <div class="label">DIFERENCIADORES</div>
       <h2>Lo que ninguna ticketera<br>genérica te da.</h2>
-      <p class="lead">Tres funciones únicas, pensadas específicamente para el deporte chileno.</p>
+      <p class="lead">Tres funciones únicas, pensadas específicamente para el deporte en Latinoamérica.</p>
     </div>
 
     <div class="diff-grid">
@@ -9380,8 +9456,8 @@ html {
         Mercado Pago acredita en 48 hrs. Match Sport transfiere al organizador semanalmente o al cierre del evento.
       </div>
       <div class="biz-foot-item">
-        <strong>Proyección 2027</strong>
-        Con 47 eventos activos y GMV de $18.4M/mes, el ingreso para Match Sport es <strong style="color: var(--purple-700);">$920K/mes</strong>.
+        <strong>Cómo escala</strong>
+        Los ingresos de Match Sport crecen con el GMV de la plataforma: a mayor volumen de inscripciones, mayor es la comisión del 7% acumulada. El ejemplo de arriba es ilustrativo.
       </div>
     </div>
   </div>
@@ -9392,7 +9468,7 @@ html {
   <div class="cta-strip">
     <div>
       <h2>Listo para conectar tu deporte<br>con toda Latinoamérica.</h2>
-      <p>Crear tu primer evento toma 5 minutos. Sin costo fijo, sin contratos. Sólo pagas el 5% si vendes.</p>
+      <p>Crear tu primer evento toma 5 minutos. Sin costo fijo, sin contratos. Sólo pagas el 7% si vendes.</p>
     </div>
     <div class="cta-strip-right">
       <a href="#/login" class="btn btn-amber btn-lg btn-block">
@@ -9420,8 +9496,16 @@ html {
       </a>
     </div>
 
-    <h2>Crea tu evento en 1 minuto</h2>
-    <p class="sub">Ingresa o crea tu cuenta de organizador. Elige tu forma favorita.</p>
+    <h2 id="auth-title">Ingresa a Match Sport</h2>
+    <p class="sub" id="auth-sub">Inicia sesión o crea tu cuenta para organizar eventos.</p>
+
+    <div class="auth-tabs">
+      <button type="button" class="auth-tab active" data-authtab="login" onclick="msAuthTab('login')">Iniciar sesión</button>
+      <button type="button" class="auth-tab" data-authtab="register" onclick="msAuthTab('register')">Crear cuenta</button>
+    </div>
+
+    <!-- Botón oficial de Google (se renderiza si hay Client ID configurado) -->
+    <div id="gsi-btn" style="display:flex; justify-content:center; margin-bottom:10px;"></div>
 
     <!-- ===== SOCIAL LOGIN ===== -->
     <div class="social-btns">
@@ -9455,15 +9539,32 @@ html {
       </button>
     </div>
 
-    <div class="divider-or">O CON TU CORREO</div>
+    <div class="divider-or">O CON TU CORREO Y CONTRASEÑA</div>
 
-    <form id="formOrg" onsubmit="event.preventDefault(); ingresarOrg()">
-      <input type="email" id="orgEmail" class="input" placeholder="tu@club.cl" required>
-      <p class="small muted" style="font-size: 11px; margin-top: 6px;">Ingresa con tu correo, sin contraseñas.</p>
-      <button type="submit" class="btn btn-outline btn-block" style="margin-top: 14px;">
-        <i class="ti ti-login" style="font-size: 16px;"></i> Ingresar
+    <!-- Iniciar sesión -->
+    <form id="formLogin" class="auth-form" onsubmit="event.preventDefault(); msLogin()">
+      <input type="email" id="loginEmail" class="input" placeholder="tu@correo.com" autocomplete="email" required>
+      <input type="password" id="loginPass" class="input" placeholder="Contraseña" autocomplete="current-password" required style="margin-top:10px;">
+      <button type="submit" class="btn btn-primary btn-block" style="margin-top: 14px;">
+        <i class="ti ti-login" style="font-size: 16px;"></i> Iniciar sesión
       </button>
     </form>
+
+    <!-- Crear cuenta -->
+    <form id="formRegister" class="auth-form" style="display:none;" onsubmit="event.preventDefault(); msRegister()">
+      <input type="text" id="regName" class="input" placeholder="Tu nombre o el de tu club" autocomplete="name" required>
+      <input type="email" id="regEmail" class="input" placeholder="tu@correo.com" autocomplete="email" required style="margin-top:10px;">
+      <input type="password" id="regPass" class="input" placeholder="Contraseña (mínimo 6 caracteres)" autocomplete="new-password" minlength="6" required style="margin-top:10px;">
+      <select id="regRole" class="select" style="margin-top:10px;">
+        <option value="organizador">Soy organizador (creo eventos)</option>
+        <option value="corredor">Soy deportista (me inscribo)</option>
+      </select>
+      <button type="submit" class="btn btn-primary btn-block" style="margin-top: 14px;">
+        <i class="ti ti-user-plus" style="font-size: 16px;"></i> Crear cuenta
+      </button>
+    </form>
+
+    <p class="small" id="auth-msg" style="display:none; margin-top:10px; text-align:center;"></p>
 
     <div class="divider"></div>
 
@@ -12123,24 +12224,136 @@ document.write(Array.from({length:64},()=>`<div style="background:${Math.random(
 } catch(_e) { console.warn('[como-funciona.html]', _e.message); } })();
 </script>
 
-<!-- ===== JS de login.html ===== -->
+<!-- ===== JS de login (email+contraseña + Google real) ===== -->
 <script>
 (function(){ try {
-function ingresarOrg() {
-  const email = document.getElementById('orgEmail').value;
-  try { localStorage.setItem('ms_role', 'organizador'); localStorage.setItem('ms_email', email); } catch(e) {}
-  if (window.toast) toast('Ingresando a tu cuenta...', 'success');
-  setTimeout(() => location.href = '#/organizador', 800);
-}
+  var CFG = window.MS_CONFIG || {};
 
-function loginSocial(provider) {
-  // Demo: simula el flujo OAuth y redirige al dashboard del organizador
-  try { localStorage.setItem('ms_role', 'organizador'); localStorage.setItem('ms_provider', provider); } catch(e) {}
-  const label = { google: 'Google', facebook: 'Facebook', instagram: 'Instagram', apple: 'Apple' }[provider];
-  if (window.toast) toast('Conectando con ' + label + '...', 'info');
-  setTimeout(() => location.href = '#/organizador', 900);
-}
-} catch(_e) { console.warn('[login.html]', _e.message); } })();
+  function showMsg(text, ok){
+    var el = document.getElementById('auth-msg');
+    if (!el) { if (window.toast) toast(text, ok?'success':'error'); return; }
+    el.style.display = 'block';
+    el.style.color = ok ? 'var(--green-600)' : 'var(--red-600)';
+    el.textContent = text;
+  }
+
+  // Tras autenticar: guarda la sesión de la SPA y redirige según el rol.
+  function completeAuth(user, isNew){
+    user = user || {};
+    var role = user.role || 'organizador';
+    try {
+      localStorage.setItem('ms_role', role);
+      if (user.email) localStorage.setItem('ms_email', user.email);
+      localStorage.setItem('orgSession', JSON.stringify({ email: user.email || '', name: user.name || '', role: role }));
+      if (user.country_code) localStorage.setItem('ms_country', user.country_code);
+    } catch(_) {}
+    if (window.MatchSPA && MatchSPA.updateNav) { try { MatchSPA.updateNav(); } catch(_){} }
+    if (window.toast) toast(isNew ? '¡Cuenta creada! Bienvenido/a 🎉' : 'Sesión iniciada ✓', 'success');
+    var dest = (role === 'corredor') ? '/eventos' : '/organizador';
+    setTimeout(function(){ if (window.MatchSPA && MatchSPA.navigate) MatchSPA.navigate(dest); else location.hash = '#'+dest; }, 500);
+  }
+
+  window.msAuthTab = function(tab){
+    document.querySelectorAll('.auth-tab').forEach(function(t){ t.classList.toggle('active', t.dataset.authtab === tab); });
+    var login = document.getElementById('formLogin'), reg = document.getElementById('formRegister');
+    var title = document.getElementById('auth-title'), sub = document.getElementById('auth-sub');
+    var msg = document.getElementById('auth-msg'); if (msg) msg.style.display='none';
+    if (tab === 'register'){
+      if (login) login.style.display='none'; if (reg) reg.style.display='block';
+      if (title) title.textContent = 'Crea tu cuenta';
+      if (sub) sub.textContent = 'Regístrate con tu correo y una contraseña.';
+    } else {
+      if (login) login.style.display='block'; if (reg) reg.style.display='none';
+      if (title) title.textContent = 'Ingresa a Match Sport';
+      if (sub) sub.textContent = 'Inicia sesión con tu correo y contraseña.';
+    }
+  };
+
+  window.msLogin = function(){
+    if (!window.MSApi) { showMsg('No hay conexión con el servidor.', false); return; }
+    var email = document.getElementById('loginEmail').value.trim();
+    var pass = document.getElementById('loginPass').value;
+    showMsg('Ingresando...', true);
+    MSApi.login(email, pass).then(function(r){
+      if (r && r.ok && r.user) completeAuth(r.user, false);
+      else showMsg((r && r.error) ? r.error : 'Correo o contraseña incorrectos.', false);
+    }).catch(function(){ showMsg('Error de conexión.', false); });
+  };
+
+  window.msRegister = function(){
+    if (!window.MSApi) { showMsg('No hay conexión con el servidor.', false); return; }
+    var name = document.getElementById('regName').value.trim();
+    var email = document.getElementById('regEmail').value.trim();
+    var pass = document.getElementById('regPass').value;
+    var role = document.getElementById('regRole').value;
+    if (pass.length < 6) { showMsg('La contraseña debe tener al menos 6 caracteres.', false); return; }
+    showMsg('Creando tu cuenta...', true);
+    MSApi.register({ name: name, email: email, password: pass, role: role,
+      country_code: (localStorage.getItem('ms_country') || 'CL') }).then(function(r){
+      if (r && r.ok && r.user) completeAuth(r.user, true);
+      else showMsg((r && r.error) ? r.error : 'No se pudo crear la cuenta.', false);
+    }).catch(function(){ showMsg('Error de conexión.', false); });
+  };
+
+  // ===== Inicio de sesión con Google (real, vía Google Identity Services) =====
+  function onGoogleCredential(response){
+    if (!response || !response.credential || !window.MSApi) return;
+    showMsg('Verificando con Google...', true);
+    MSApi.oauth('google', { credential: response.credential }).then(function(r){
+      if (r && r.ok && r.user) completeAuth(r.user, false);
+      else showMsg((r && r.error) ? r.error : 'No se pudo iniciar con Google.', false);
+    }).catch(function(){ showMsg('Error verificando con Google.', false); });
+  }
+
+  var googleReady = false;
+  function initGoogle(){
+    if (googleReady) return;
+    var cid = CFG.googleClientId;
+    var custom = document.querySelector('.social-btn.google');
+    if (!cid) { return; } // sin Client ID: se usa el botón personalizado con mensaje
+    if (!(window.google && google.accounts && google.accounts.id)) return;
+    try {
+      google.accounts.id.initialize({ client_id: cid, callback: onGoogleCredential });
+      var holder = document.getElementById('gsi-btn');
+      if (holder) { holder.innerHTML=''; google.accounts.id.renderButton(holder, { theme:'outline', size:'large', width: 320, text:'continue_with' }); }
+      if (custom) custom.style.display = 'none'; // se reemplaza por el botón oficial
+      googleReady = true;
+    } catch(e) { console.warn('Google init', e); }
+  }
+
+  // Carga el SDK de Google si hay Client ID.
+  if (CFG.googleClientId && !document.getElementById('gsi-sdk')) {
+    var s = document.createElement('script');
+    s.src = 'https://accounts.google.com/gsi/client'; s.async = true; s.defer = true; s.id = 'gsi-sdk';
+    s.onload = initGoogle;
+    document.head.appendChild(s);
+  }
+  document.addEventListener('ms:route', initGoogle);
+  window.addEventListener('hashchange', function(){ setTimeout(initGoogle, 200); });
+  setTimeout(initGoogle, 400);
+
+  // Al abrir /login, reinicia al modo "Iniciar sesión" y limpia mensajes.
+  if (window.MatchSPA && MatchSPA.onPageInit) {
+    MatchSPA.onPageInit('page-login', function(){ if (window.msAuthTab) msAuthTab('login'); var m=document.getElementById('auth-msg'); if(m) m.style.display='none'; setTimeout(initGoogle, 100); });
+  }
+
+  // Manejo de los botones sociales personalizados.
+  window.loginSocial = function(provider){
+    if (provider === 'google'){
+      if (CFG.googleClientId && window.google && google.accounts && google.accounts.id){
+        initGoogle();
+        try { google.accounts.id.prompt(); } catch(_) {}
+      } else {
+        showMsg('El inicio con Google requiere configurar el Client ID de Google (variable MS_GOOGLE_CLIENT_ID). Mientras tanto, usa tu correo y contraseña.', false);
+      }
+      return;
+    }
+    if (provider === 'facebook' || provider === 'apple'){
+      showMsg('El inicio con ' + (provider==='facebook'?'Facebook':'Apple') + ' se activará al configurar sus credenciales. Por ahora puedes usar Google o tu correo y contraseña.', false);
+      return;
+    }
+  };
+} catch(_e) { console.warn('[login]', _e.message); } })();
 </script>
 
 <!-- ===== JS de organizador/dashboard.html ===== -->

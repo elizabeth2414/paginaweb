@@ -163,6 +163,10 @@ function handle_auth(string $method, string $action): void
         json_out(['ok' => true, 'token' => $token, 'user' => ['role' => 'admin', 'name' => 'Administrador']]);
     }
 
+    if ($action === 'oauth' && $method === 'POST') {
+        handle_oauth();
+    }
+
     if ($action === 'me' && $method === 'GET') {
         $user = current_user();
         json_out(['ok' => true, 'user' => $user ? sanitize_user($user) : null]);
@@ -190,6 +194,101 @@ function sanitize_user(array $u): array
 {
     unset($u['password_hash'], $u['token']);
     return $u;
+}
+
+/** GET remoto que devuelve JSON (curl o file_get_contents). */
+function http_get_json(string $url): ?array
+{
+    $raw = null;
+    if (function_exists('curl_init')) {
+        $ch = curl_init($url);
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 10,
+            CURLOPT_SSL_VERIFYPEER => true,
+        ]);
+        $raw = curl_exec($ch);
+        curl_close($ch);
+    }
+    if ($raw === null || $raw === false) {
+        $ctx = stream_context_create(['http' => ['timeout' => 10]]);
+        $raw = @file_get_contents($url, false, $ctx);
+    }
+    if ($raw === false || $raw === null || $raw === '') {
+        return null;
+    }
+    $data = json_decode($raw, true);
+    return is_array($data) ? $data : null;
+}
+
+/** Verifica un ID token de Google contra el endpoint tokeninfo. */
+function google_verify(string $idToken): ?array
+{
+    $info = http_get_json('https://oauth2.googleapis.com/tokeninfo?id_token=' . urlencode($idToken));
+    if (!$info || empty($info['email'])) {
+        return null;
+    }
+    return $info;
+}
+
+/** Crea o actualiza un usuario autenticado por proveedor externo y devuelve token+user. */
+function upsert_oauth_user(PDO $db, string $email, string $name, string $provider, string $country): array
+{
+    $email = strtolower(trim($email));
+    $token = make_token();
+    $stmt = $db->prepare('SELECT * FROM users WHERE email = ? LIMIT 1');
+    $stmt->execute([$email]);
+    $user = $stmt->fetch();
+    if ($user) {
+        $db->prepare('UPDATE users SET token = ?, provider = ? WHERE id = ?')
+           ->execute([$token, $provider, $user['id']]);
+    } else {
+        $db->prepare(
+            'INSERT INTO users (name, email, password_hash, role, provider, country_code, token, created_at)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+        )->execute([$name, $email, '', 'organizador', $provider, $country, $token, now_iso()]);
+    }
+    $stmt = $db->prepare('SELECT * FROM users WHERE email = ?');
+    $stmt->execute([$email]);
+    return ['token' => $token, 'user' => sanitize_user($stmt->fetch() ?: [])];
+}
+
+/** POST /api/auth/oauth — inicio de sesión con proveedor externo. */
+function handle_oauth(): void
+{
+    $db = ms_db();
+    $cfg = ms_config();
+    $b = request_body();
+    $provider = strtolower((string) ($b['provider'] ?? ''));
+    $country = strtoupper(substr((string) ($b['country_code'] ?? 'CL'), 0, 2));
+
+    if ($provider === 'google') {
+        $credential = (string) ($b['credential'] ?? '');
+        if ($credential === '') {
+            json_error('Falta el token de Google.', 400);
+        }
+        $info = google_verify($credential);
+        if (!$info) {
+            json_error('No se pudo verificar el inicio de sesión con Google.', 401);
+        }
+        $cid = (string) $cfg['google_client_id'];
+        if ($cid !== '' && ($info['aud'] ?? '') !== $cid) {
+            json_error('El token de Google no corresponde a esta aplicación.', 401);
+        }
+        if (($info['email_verified'] ?? 'true') === 'false') {
+            json_error('El correo de Google no está verificado.', 401);
+        }
+        $res = upsert_oauth_user($db, $info['email'], $info['name'] ?? '', 'google', $country);
+        json_out(['ok' => true, 'token' => $res['token'], 'user' => $res['user']]);
+    }
+
+    // Facebook y Apple: requieren verificación con las credenciales del proveedor.
+    // Se dejan preparados; devuelven un mensaje claro mientras no estén configurados.
+    if ($provider === 'facebook' || $provider === 'apple') {
+        json_error('El inicio de sesión con ' . ucfirst($provider) . ' aún no está configurado en el servidor.', 501);
+    }
+
+    json_error('Proveedor de autenticación no soportado.', 400);
 }
 
 // ============================================================
